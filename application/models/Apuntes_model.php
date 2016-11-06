@@ -20,9 +20,20 @@ class Apuntes_model extends CI_Model {
 
     //obtenemos todas las provincias a paginar con la función
     //total_posts_paginados pasando la cantidad por página y el segmento
-    //como parámetros de la misma
+    //como parámetros de la misma   
     function total_paginados($por_pagina, $segmento) {
-        $consulta = $this->db->get('apuntes', $por_pagina, $segmento);
+        $sql = <<< SQL
+        SELECT apuntes.apunte as apunte, fechaApunte, fechaPago, fechaFactura,tipo, recurso, destino, cuenta, concepto, numDocumento,
+        observaciones, tipoDocumento, titular, apuntes.importe as importe, 
+        GROUP_CONCAT(CONCAT_WS(':',desgloses.codCuenta,cuentas.descripcion,desgloses.Importe) SEPARATOR '|') as desglose 
+        FROM `apuntes` 
+        LEFT JOIN desgloses ON apuntes.anyo=desgloses.anyo AND apuntes.apunte=desgloses.apunte
+        LEFT JOIN cuentas ON desgloses.codCuenta=cuentas.codCuenta
+        GROUP BY apuntes.anyo,apuntes.apunte
+        ORDER BY apunte
+        LIMIT ?, ?
+SQL;
+        $consulta = $this->db->query($sql, array((int)$segmento, $por_pagina));
         if ($consulta->num_rows() > 0) {
             foreach ($consulta->result() as $fila) {
                 $data[] = $fila;
@@ -44,6 +55,15 @@ class Apuntes_model extends CI_Model {
             log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
         }
         
+    }
+    
+    //obtenemos el total de filas para hacer la paginación
+    function getCuentas() {
+        $query = $this->db->get('cuentas');
+        foreach ($query->result() as $fila) {
+            $data[] = $fila;
+        }
+        return $data;
     }
 
 }

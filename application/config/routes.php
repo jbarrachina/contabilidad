@@ -58,6 +58,9 @@ $route['apuntes/accion'] = 'Apuntes_controller/accion';
 
 $route['apuntes/republic'] = 'Apuntes_controller/republic';
 
+$route['desglose/(:num)'] = 'Desglose_controller';
+$route['desglose/addDesglose'] = 'Desglose_controller/addDesglose';
+
 $route['404_override'] = '';
 
 $route['translate_uri_dashes'] = FALSE;

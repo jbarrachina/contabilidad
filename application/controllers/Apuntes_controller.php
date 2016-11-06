@@ -10,7 +10,7 @@ class Apuntes_controller extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-
+        //$this->load->library('../controllers/Desglose_controller.php'); Unable to locate the specified class: Session.php
         $this->load->helper('url');
         $this->load->model('apuntes_model');
     }
@@ -22,7 +22,7 @@ class Apuntes_controller extends CI_Controller {
         $config['base_url'] = base_url() . 'apuntes/pagina/'; // parametro base de la aplicación, si tenemos un .htaccess nos evitamos el index.php
         $config['total_rows'] = $this->apuntes_model->filas(); //calcula el número de filas  
         $config['per_page'] = $pages; //Número de registros mostrados por páginas
-        $config['num_links'] = 20; //Número de links mostrados en la paginación
+        $config['num_links'] = 10; //Número de links mostrados en la paginación
         $config['first_link'] = 'Primera'; //primer link
         $config['last_link'] = 'Última'; //último link
         $config["uri_segment"] = 3; //el segmento de la paginación
