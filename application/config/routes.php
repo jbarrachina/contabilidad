@@ -55,7 +55,9 @@ $route['apuntes/pagina/(:num)'] = 'Apuntes_controller';//cuando no sea la primer
 $route['apuntes/pagina'] = 'Apuntes_controller';//cuando sea la primera página
 
 $route['apuntes/accion'] = 'Apuntes_controller/accion';
-
+$route['apuntes/search'] = 'Apuntes_controller/search';
+$route['apuntes/search/(:any)/(:num)'] = 'Apuntes_controller/search';
+$route['apuntes/search/(:any)'] = 'Apuntes_controller/search';
 $route['apuntes/republic'] = 'Apuntes_controller/republic';
 
 $route['desglose/(:num)'] = 'Desglose_controller';

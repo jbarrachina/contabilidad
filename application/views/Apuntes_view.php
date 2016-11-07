@@ -21,6 +21,19 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
+            <div class="row">
+                <form name="search" action="/php/contabilidad/apuntes/search" method="POST">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="search"> buscar: <input class="form-control" id="search" name="search" type="text"/>                       
+                        </div>
+                        <div class="col-md-6">
+                            <input id="btn_search" name="btn_search" type="submit" class="btn btn-danger" value="Search" />
+                            <a href="<?php echo "/php/contabilidad/apuntes/pagina"; ?>" class="btn btn-primary">Show All</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <form name="tabla" action="/php/contabilidad/apuntes/accion" method="POST">          
                 <div class="row bg-primary">
                     <div class="col-md-1"><br><h4>Orden</h4></div>
@@ -35,6 +48,7 @@ and open the template in the editor.
                 </div>
                 <div class="row"><br></div>
                 <?php
+                if (isset($records)){
                 foreach ($records as $r) {
                     echo "<div class=\"". ($r->apunte%2==1 ? "odd" : "even bg-warning")."\">";
                     echo "<div class='row'>\n";
@@ -85,8 +99,15 @@ and open the template in the editor.
             </div>
             </div> <!-- fila doble -->
             <?php
-        }//each
+            }//each
+            //echo $total;
+        }//if
+        else {
+            echo "<p> No se encuentran resultados </p>";
+        }
+        
         ?>
+            
         <button id="btn-des" class="btn btn-primary" type="submit">Modificar</button>
     </form>
     <?php echo $this->pagination->create_links() ?>

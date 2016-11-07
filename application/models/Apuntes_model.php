@@ -13,33 +13,56 @@ class Apuntes_model extends CI_Model {
     }
 
     //obtenemos el total de filas para hacer la paginación
-    function filas() {
+    function filas($filtro = NULL) {
+        if ($filtro == NULL) $filtro = "";
+        $this->db->like('concepto',$filtro);
+        $this->db->or_like('titular',$filtro);
+        $this->db->or_like('tipoDocumento',$filtro);
         $consulta = $this->db->get('apuntes');
         return $consulta->num_rows();
+    }
+    
+    //obtenemos el total de filas para hacer la paginación
+    function suma($filtro = NULL) {
+        if ($filtro == NULL) $filtro = "";
+        $this->db->select_sum('importe');
+        $this->db->like('concepto',$filtro);
+        $this->db->or_like('titular',$filtro);
+        $this->db->or_like('tipoDocumento',$filtro);
+        $consulta = $this->db->get('apuntes');
+        return $consulta->importe;
     }
 
     //obtenemos todas las provincias a paginar con la función
     //total_posts_paginados pasando la cantidad por página y el segmento
     //como parámetros de la misma   
-    function total_paginados($por_pagina, $segmento) {
+    function total_paginados($por_pagina, $segmento, $filtro = NULL) {
+        
         $sql = <<< SQL
         SELECT apuntes.apunte as apunte, fechaApunte, fechaPago, fechaFactura,tipo, recurso, destino, cuenta, concepto, numDocumento,
         observaciones, tipoDocumento, titular, apuntes.importe as importe, 
         GROUP_CONCAT(CONCAT_WS(':',desgloses.codCuenta,cuentas.descripcion,desgloses.Importe) SEPARATOR '|') as desglose 
-        FROM `apuntes` 
+        FROM apuntes
         LEFT JOIN desgloses ON apuntes.anyo=desgloses.anyo AND apuntes.apunte=desgloses.apunte
         LEFT JOIN cuentas ON desgloses.codCuenta=cuentas.codCuenta
+        WHERE concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ?
         GROUP BY apuntes.anyo,apuntes.apunte
         ORDER BY apunte
         LIMIT ?, ?
 SQL;
-        $consulta = $this->db->query($sql, array((int)$segmento, $por_pagina));
+        if ($filtro == NULL) $filtro = "";
+        $filtro ="%$filtro%";
+        log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
+        $consulta = $this->db->query($sql, array($filtro, $filtro, $filtro, (int)$segmento, $por_pagina));
         if ($consulta->num_rows() > 0) {
             foreach ($consulta->result() as $fila) {
                 $data[] = $fila;
+                log_message('info', 'USER_INFO totalpaginados '.$fila->apunte);
             }
             return $data;
-        }
+        } else {
+            return 0;
+        }         
     }
 
     function updateObservaciones($apunte,$observaciones) {

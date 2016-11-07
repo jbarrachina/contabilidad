@@ -31,6 +31,10 @@ class Apuntes_controller extends CI_Controller {
 
     public function index() {
         $data['title'] = 'Paginacion_ci';
+        $config['total_rows'] = $this->apuntes_model->filas();
+        $config['base_url'] = base_url() . 'apuntes/pagina/';
+        $config["uri_segment"] = 3;
+        $this->pagination->initialize($config);
         //$pages = 10; //Número de registros mostrados por páginas
         $data["records"] = $this->apuntes_model->total_paginados($this->pages, $this->uri->segment(3));
         //$query = $this->db->get("apuntes");
@@ -39,11 +43,26 @@ class Apuntes_controller extends CI_Controller {
         $this->load->view('Apuntes_view', $data);
     }
 
+    public function search() {
+        // get search string
+        $search = ($this->input->post("search")) ? $this->input->post("search") : "NIL";
+        $search = ($this->uri->segment(3)) ? $this->uri->segment(3) : $search;
+        $config['base_url'] =  base_url() . "apuntes/search/$search/";
+        $config["uri_segment"] = 4;
+        $config['total_rows'] = $this->apuntes_model->filas($search);
+        $this->pagination->initialize($config);
+        $apuntedeinicio = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        log_message('info', 'USER_INFO search ');
+        $data["records"] = $this->apuntes_model->total_paginados($this->pages, $apuntedeinicio, $search);
+        //$data["total"] = $this->apuntes_model->suma($search);
+        $this->load->view('Apuntes_view', $data);
+    }
+
     public function accion() {
         $this->load->model('apuntes_model');
         $apuntes = $this->input->post('apunte');
         $observaciones = $this->input->post('observaciones');
-        $apuntedeinicio = $apuntes[0] - 1;
+        $apuntedeinicio = ($apuntes[0] > 0) ? $apuntes[0] - 1 : 0;
         $config['cur_page'] = $apuntedeinicio;
         $this->pagination->initialize($config);
         log_message('info', 'USER_INFO accion ' . $apuntedeinicio);
