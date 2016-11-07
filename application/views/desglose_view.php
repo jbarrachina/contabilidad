@@ -6,14 +6,14 @@
     <select id="cuenta" name="cuenta">
        <?php 
        foreach($cuentas as $cuenta){
-           echo '<option value="'.$cuenta->conCuenta.'">'.$cuenta->descripcion.'</option>';
+           echo '<option value="'.$cuenta->codCuenta.'">'.$cuenta->descripcion.'</option>';
        }
        ?>
-    </select>
+    </select><br/>
     <label for="importe">
         Importe:
     </label>
-    <input type="text" id="importe" name="importe"/> 
+    <input type="text" id="importe" name="importe"/> <br/>
     <div class="ui-state-error ui-corner-all" id="contenedorError">
         <p>
             <span class="ui-icon ui-icon-alert iconoError"></span>

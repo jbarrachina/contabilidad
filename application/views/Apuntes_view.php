@@ -36,6 +36,7 @@ and open the template in the editor.
                 <div class="row"><br></div>
                 <?php
                 foreach ($records as $r) {
+                    echo "<div class=\"". ($r->apunte%2==1 ? "odd" : "even bg-warning")."\">";
                     echo "<div class='row'>\n";
                     $file = "facturas/16" . sprintf("%04d", $r->apunte) . ".pdf";
                     echo "<div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='" . $r->apunte . "'></div>\n";
@@ -82,6 +83,7 @@ and open the template in the editor.
                     </div>
                 </div>
             </div>
+            </div> <!-- fila doble -->
             <?php
         }//each
         ?>

@@ -39,12 +39,12 @@ $(function ()
         $("#dialog").dialog(
                 {
                     modal: true,
-                    width : 800,
+                    width : 600,
                     open: function () {
                         $(this).load("/php/contabilidad/desglose/"+apunte);
                         //$(this).append("<input type='hide' value='"+apunte+"'>");
                     },
-                    show: {effect: "bounce", duration: 600},
+                    show: {effect: "slide", duration: 600},
                     hide: {effect: "explode", duration: 600},
                     title: "Añadir cuenta",
                     closeOnEscape: false,
