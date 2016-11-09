@@ -4,15 +4,306 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html lang=""es>
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" />
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="/php/contabilidad/css/estilos.css">
+        <script src="/php/contabilidad/js/scripts.js" type="text/javascript"></script>
+        <title>Apuntes</title>
     </head>
     <body>
-        <div>
-            <embed src="160808.pdf" height="200" width="120">
-        </div>
+        <div class="container">
+            <div class="row">
+                <form class="form-inline" name="search" action="/php/contabilidad/apuntes/search" method="POST">
+                    <div class="form-group">
+                         <div class="col-md-3 buscar">
+                            <label for="search"> buscar</label> 
+                            <input placeholder="buscar" class="form-control" id="search" name="search" type="text"/>                       
+                        </div>
+                        <div class=" col-md-3 buscar">
+                            <input id="btn_search" name="btn_search" type="submit" class="btn btn-danger" value="Buscar" />
+                            <a href="/php/contabilidad/apuntes/pagina" class="btn btn-primary">Mostrar todo</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal pull-right">
+                            <dt><h4>Gasto</h4></dt><dd><h4><span class='label label-success'>2.392,73</span></h4></dd>                        </dl>
+                    </div>
+                </form>
+            </div>
+            <form name="tabla" class="titulos" action="/php/contabilidad/apuntes/accion" method="POST">          
+                <div class="row bg-primary ">
+                    <div class="col-md-1"><br><h4>Orden</h4></div>
+                    <div class="col-md-1"><h4>Apunte Pago</h4></div>
+                    <div class="col-md-1"><h4>Fecha Factura</h4></div>
+                    <div class="col-md-1"><br><h4>Tipo</h4></div>
+                    <div class="col-md-1"><br><h4>Importe</h4></div>
+                    <div class="col-md-3"><br><h4>Concepto</h4></div>
+                    <div class="col-md-2"><br><h4>Observaciones</h4></div>
+                    <div class="col-md-1"><br><h4>Documento</h4></div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="odd"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='17'></div>
+                        <div class='col-md-1'>2016-03-23<br>2016-01-19</div>
+                        <div class='col-md-1'>2016-01-08</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>45,13</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 2016/00036<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des17" name="des17"
+                                    data-target="#collapseExample17" aria-expanded="false" aria-controls="collapseExample17" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample17">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add17" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="even bg-warning"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='19'></div>
+                        <div class='col-md-1'>2016-03-23<br>2016-01-19</div>
+                        <div class='col-md-1'>2015-12-11</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>9,68</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 154814<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des19" name="des19"
+                                    data-target="#collapseExample19" aria-expanded="false" aria-controls="collapseExample19" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample19">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add19" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="odd"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='69'></div>
+                        <div class='col-md-1'>2016-04-08<br>2016-02-03</div>
+                        <div class='col-md-1'>2016-01-25</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>135,41</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 2016/00219<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des69" name="des69"
+                                    data-target="#collapseExample69" aria-expanded="false" aria-controls="collapseExample69" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample69">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add69" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="even bg-warning"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='70'></div>
+                        <div class='col-md-1'>2016-04-08<br>2016-02-03</div>
+                        <div class='col-md-1'>2016-01-21</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>112,53</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 2016/00196<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des70" name="des70"
+                                    data-target="#collapseExample70" aria-expanded="false" aria-controls="collapseExample70" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample70">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add70" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="odd"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='71'></div>
+                        <div class='col-md-1'>2016-04-08<br>2016-02-03</div>
+                        <div class='col-md-1'>2016-01-28</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>28,56</strong></div>
+                        <div class='col-md-3'>SAN-FRA.2016/00337<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des71" name="des71"
+                                    data-target="#collapseExample71" aria-expanded="false" aria-controls="collapseExample71" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample71">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add71" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="even bg-warning"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='75'></div>
+                        <div class='col-md-1'>2016-04-08<br>2016-02-03</div>
+                        <div class='col-md-1'>2015-12-23</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>67,76</strong></div>
+                        <div class='col-md-3'>SAN-FRA.154961<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des75" name="des75"
+                                    data-target="#collapseExample75" aria-expanded="false" aria-controls="collapseExample75" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample75">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add75" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="odd"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='76'></div>
+                        <div class='col-md-1'>2016-04-08<br>2016-02-03</div>
+                        <div class='col-md-1'>2015-11-12</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>127,03</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 154341<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des76" name="des76"
+                                    data-target="#collapseExample76" aria-expanded="false" aria-controls="collapseExample76" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample76">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add76" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="even bg-warning"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='112'></div>
+                        <div class='col-md-1'>2016-04-08<br>2016-02-19</div>
+                        <div class='col-md-1'>2016-02-04</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>417,09</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 2016/507<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des112" name="des112"
+                                    data-target="#collapseExample112" aria-expanded="false" aria-controls="collapseExample112" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample112">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add112" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="odd"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='130'></div>
+                        <div class='col-md-1'>2016-04-12<br>2016-03-03</div>
+                        <div class='col-md-1'>2016-02-24</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>86,09</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 2016/00762<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des130" name="des130"
+                                    data-target="#collapseExample130" aria-expanded="false" aria-controls="collapseExample130" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample130">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add130" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+                <div class="even bg-warning"><div class='row'>
+                        <div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='144'></div>
+                        <div class='col-md-1'>2016-04-12<br>2016-03-10</div>
+                        <div class='col-md-1'>2016-02-19</div>
+                        <div class='col-md-1'>A-Gasto-Banco</div>
+                        <div class='col-md-1 text-right'><strong>21,78</strong></div>
+                        <div class='col-md-3'>SAN-FRA. 2016/00691<br>SANILABO SL</div>
+                        <div class='col-md-2'><input type='text' name='observaciones[]'  value=''></div><div class='col-md-1'>TRF</div>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-info" id="btn-des144" name="des144"
+                                    data-target="#collapseExample144" aria-expanded="false" aria-controls="collapseExample144" 
+                                    title='Desglose'>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="collapse col-md-6" id="collapseExample144">
+                            <div class="well">
+                                <dl class="dl-horizontal">
+                                </dl>
+                                <button type="button" class="btn-add" id="btn-add144" title="Añadir cuenta">+</button>                    
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- fila doble -->
+
+                <button id="btn-des" class="btn btn-primary" type="submit">Modificar</button>
+            </form>
+            <ul class="pagination pagination-md"><li class="active"><span>1<span></span></span></li><li><a href="http://10.0.3.58/php/contabilidad/apuntes/search/SANILABO/10" data-ci-pagination-page="2">2</a></li><li><a href="http://10.0.3.58/php/contabilidad/apuntes/search/SANILABO/10" data-ci-pagination-page="2" rel="next">Siguiente</a></li></ul></div>
     </body>
 </html>

@@ -18,7 +18,6 @@ function convierteFecha($fechaOriginal) {
  */
 
 function replaceApuntes($campos) {
-
     if (count($campos) == 15) {
         for ($i = 0; $i < count($campos); $i++) {
             $campos[$i] = ($campos[$i] == "\"" ? substr($campos[$i], 1, -1) : $campos[$i]);
@@ -42,7 +41,7 @@ function replaceApuntes($campos) {
                 case 8:$cuenta = ($campos[8] == "" ? NULL : substr($campos[8], 1, -1));
                     break;
                 case 9:
-                    $importe = (float) str_replace(',','.',($campos[9][0]=="\""?substr($campos[9],1,-1):$campos[9]));
+                    $importe = (float) str_replace(',', '.', ($campos[9][0] == "\"" ? substr($campos[9], 1, -1) : $campos[9]));
                     break;
                 case 10:$titular = ($campos[10] == "" ? NULL : substr($campos[10], 1, -1));
                     break;
@@ -53,7 +52,7 @@ function replaceApuntes($campos) {
             }
         }
     } else {
-        print_r($campos);
+        // print_r($campos);
     }
 
     $host = "localhost";
@@ -68,16 +67,21 @@ function replaceApuntes($campos) {
     }
     $conexion->set_charset('utf8');
     $query = <<<SQL
-    REPLACE INTO apuntes
+    UPDATE apuntes
         SET anyo= ?, apunte= ?, fechaPago= ?, fechaApunte= ?, fechaFactura= ?,
             tipo= ?, recurso= ?, destino= ?, cuenta= ?, importe= ?, titular= ?,
             tipoDocumento= ?, concepto= ?
 SQL;
 
     $stmt = $conexion->prepare($query);
-    $stmt->bind_param("iisssssssssss", $anyo, $apunte, $fechaPago, $fechaApunte, $fechaFactura, $tipo, $recurso, $destino,$cuenta,$importe,$titular,$tipoDocumento,$concepto);
+    $stmt->bind_param("iisssssssssss", $anyo, $apunte, $fechaPago, $fechaApunte, $fechaFactura, $tipo, $recurso, $destino, $cuenta, $importe, $titular, $tipoDocumento, $concepto);
     if (!$stmt->execute()) {
         echo $stmt->error;
+        $query = str_replace("UPDATE", "INSERT INTO", $query);
+        $stmt->bind_param("iisssssssssss", $anyo, $apunte, $fechaPago, $fechaApunte, $fechaFactura, $tipo, $recurso, $destino, $cuenta, $importe, $titular, $tipoDocumento, $concepto);
+        if (!$stmt->execute()) {
+            echo $stmt->error;
+        }
     }
 }
 

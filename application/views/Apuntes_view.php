@@ -69,7 +69,7 @@ and open the template in the editor.
                     echo $r->fechaPago . "</div>\n";
                     echo "<div class='col-md-1'>" . $r->fechaFactura . "</div>\n";
                     echo "<div class='col-md-1'>" . $r->recurso . "-" . $r->tipo . "-" . $r->destino . "</div>\n";
-                    echo "<div class='col-md-1 ",($r->tipo=='Ingreso')?"text-info":""," text-right'><strong>" . number_format($r->importe,2,',','.') . "</strong></div>\n";
+                    echo "<div class='col-md-1 ",($r->tipo=='Ingreso')?"text-danger":""," text-right'><strong>" . number_format($r->importe,2,',','.') . "</strong></div>\n";
                     echo "<div class='col-md-3'>" . $r->concepto . "<br>";
                     echo $r->titular . "</div>\n";
                     echo "<div class='col-md-2'><input type='text' name='observaciones[]'  value='" . $r->observaciones . "'></div>";
