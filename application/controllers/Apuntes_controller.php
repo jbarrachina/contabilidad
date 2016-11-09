@@ -37,6 +37,7 @@ class Apuntes_controller extends CI_Controller {
         $this->pagination->initialize($config);
         //$pages = 10; //Número de registros mostrados por páginas
         $data["records"] = $this->apuntes_model->total_paginados($this->pages, $this->uri->segment(3));
+        $data["total"] = $this->apuntes_model->suma();
         //$query = $this->db->get("apuntes");
         //$data['records'] = $query->result();
         //$this->load->helper('url');
@@ -54,7 +55,7 @@ class Apuntes_controller extends CI_Controller {
         $apuntedeinicio = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         log_message('info', 'USER_INFO search ');
         $data["records"] = $this->apuntes_model->total_paginados($this->pages, $apuntedeinicio, $search);
-        //$data["total"] = $this->apuntes_model->suma($search);
+        $data["total"] = $this->apuntes_model->suma($search);
         $this->load->view('Apuntes_view', $data);
     }
 
@@ -69,6 +70,7 @@ class Apuntes_controller extends CI_Controller {
         $this->apuntes_model->actualizarObservaciones($apuntes, $observaciones);
         //volver a la pantalla de partida
         $data["records"] = $this->apuntes_model->total_paginados($this->pages, $apuntedeinicio);
+        $data["total"] = $this->apuntes_model->suma();
         $this->load->view('Apuntes_view', $data);
     }
 

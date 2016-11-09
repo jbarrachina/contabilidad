@@ -18,6 +18,7 @@ class Apuntes_model extends CI_Model {
         $this->db->like('concepto',$filtro);
         $this->db->or_like('titular',$filtro);
         $this->db->or_like('tipoDocumento',$filtro);
+        $this->db->or_like('cuenta',$filtro);
         $consulta = $this->db->get('apuntes');
         return $consulta->num_rows();
     }
@@ -25,12 +26,22 @@ class Apuntes_model extends CI_Model {
     //obtenemos el total de filas para hacer la paginación
     function suma($filtro = NULL) {
         if ($filtro == NULL) $filtro = "";
+        $this->db->select('tipo');
         $this->db->select_sum('importe');
+        $this->db->where('apunte >',2);
+        $this->db->where('recurso <>','T');
         $this->db->like('concepto',$filtro);
         $this->db->or_like('titular',$filtro);
         $this->db->or_like('tipoDocumento',$filtro);
+        $this->db->or_like('cuenta',$filtro);    
+        $this->db->group_by('tipo');
         $consulta = $this->db->get('apuntes');
-        return $consulta->importe;
+        $data=[];
+        foreach ($consulta->result() as $fila){
+            $data[]=$fila;
+            log_message('info', 'USER_INFO totalpaginados '.$fila->importe);
+        }
+        return $data;
     }
 
     //obtenemos todas las provincias a paginar con la función
@@ -45,7 +56,7 @@ class Apuntes_model extends CI_Model {
         FROM apuntes
         LEFT JOIN desgloses ON apuntes.anyo=desgloses.anyo AND apuntes.apunte=desgloses.apunte
         LEFT JOIN cuentas ON desgloses.codCuenta=cuentas.codCuenta
-        WHERE concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ?
+        WHERE concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ? OR cuenta LIKE ?
         GROUP BY apuntes.anyo,apuntes.apunte
         ORDER BY apunte
         LIMIT ?, ?
@@ -53,11 +64,10 @@ SQL;
         if ($filtro == NULL) $filtro = "";
         $filtro ="%$filtro%";
         log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
-        $consulta = $this->db->query($sql, array($filtro, $filtro, $filtro, (int)$segmento, $por_pagina));
+        $consulta = $this->db->query($sql, array($filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina));
         if ($consulta->num_rows() > 0) {
-            foreach ($consulta->result() as $fila) {
+            foreach ($consulta->result() as $fila) { 
                 $data[] = $fila;
-                log_message('info', 'USER_INFO totalpaginados '.$fila->apunte);
             }
             return $data;
         } else {
