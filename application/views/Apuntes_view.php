@@ -21,29 +21,35 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <div class="row header">
-                <form class="form-inline" name="search" action="/php/contabilidad/apuntes/search" method="POST">
-                    <div class="col-md-3 buscar">
-                        <label for="search"> buscar</label> 
-                        <input placeholder="buscar" class="form-control" id="search" name="search" type="text"/>                       
-                    </div>
-                    <div class=" col-md-3 buscar">
+            <div class="row header">           
+                <div class="col-md-5 buscar">
+                    <form class="form-inline" name="search" action="/php/contabilidad/apuntes/search" method="POST"> 
+                        <input placeholder="buscar" class="form-control" id="search" name="search" type="text"/>  
                         <input id="btn_search" name="btn_search" type="submit" class="btn btn-danger" value="Buscar" />
                         <a href="<?php echo "/php/contabilidad/apuntes/pagina"; ?>" class="btn btn-primary">Mostrar todo</a>
-                    </div>
-                    <div class="col-md-6">
-                        <dl class="dl-horizontal pull-right">
-                            <?php
-                            if (isset($total[0])) {
-                                echo "<dt><h4>", $total[0]->tipo, "</h4></dt><dd><h4><span class='label label-success'>", number_format($total[0]->importe, 2, ",", "."), "</span></h4></dd>";
-                            }
-                            if (isset($total[1])) {
-                                echo "<dt><h4>", $total[1]->tipo, "</h4></dt><dd><h4><span class='label label-danger'>", number_format($total[1]->importe, 2, ',', '.'), "</span></h4></dd>";
-                            }
-                            ?>
-                        </dl>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <div class="col-md-5 buscar"> 
+                    <form class="form-inline" name="upload-file"  action="importarApuntes.php" method="post" enctype="multipart/form-data">
+                        <label class="btn btn-default btn-file">
+                            Selecciona un archivo cvs <input name="userfile" type="file" style="display: none;" >
+                        </label>
+                        <input type="submit" class="btn btn-danger" value="Enviar">
+                    </form> 
+                </div>
+                <div class="col-md-2">
+                    <dl class="dl-horizontal pull-right">
+                        <?php
+                        if (isset($total[0])) {
+                            echo "<dt><h4>", $total[0]->tipo, "</h4></dt><dd><h4><span class='label label-success'>", number_format($total[0]->importe, 2, ",", "."), "</span></h4></dd>";
+                        }
+                        if (isset($total[1])) {
+                            echo "<dt><h4>", $total[1]->tipo, "</h4></dt><dd><h4><span class='label label-danger'>", number_format($total[1]->importe, 2, ',', '.'), "</span></h4></dd>";
+                        }
+                        ?>
+                    </dl>
+                </div>
+
             </div>
             <form name="tabla" action="/php/contabilidad/apuntes/accion" method="POST">          
                 <div class="row bg-primary titulos">
@@ -58,43 +64,43 @@ and open the template in the editor.
                     <div class="col-md-1"></div>
                 </div>
                 <?php
-                if (isset($records)){
-                $i=1;
-                foreach ($records as $r) {
-                    echo "<div class=\"". ($i++%2==1 ? "odd" : "even bg-warning")."\">";
-                    echo "<div class='row'>\n";
-                    $file = "facturas/16" . sprintf("%04d", $r->apunte) . ".pdf";
-                    echo "<div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='" . $r->apunte . "'></div>\n";
-                    echo "<div class='col-md-1'>" . $r->fechaApunte . "<br>";
-                    echo $r->fechaPago . "</div>\n";
-                    echo "<div class='col-md-1'>" . $r->fechaFactura . "</div>\n";
-                    echo "<div class='col-md-1'>" . $r->recurso . "-" . $r->tipo . "-" . $r->destino . "</div>\n";
-                    echo "<div class='col-md-1 ",($r->tipo=='Ingreso')?"text-danger":""," text-right'><strong>" . number_format($r->importe,2,',','.') . "</strong></div>\n";
-                    echo "<div class='col-md-3'>" . $r->concepto . "<br>";
-                    echo $r->titular . "</div>\n";
-                    echo "<div class='col-md-2'><input type='text' name='observaciones[]'  value='" . $r->observaciones . "'></div>";
-                    echo "<div class='col-md-1'>";
-                    if (file_exists($file)) {
-                        echo "<a href=\"/php/contabilidad/$file\">";
-                    }
-                    echo $r->tipoDocumento;
-                    if (file_exists($file)) {
-                        echo "</a>";
-                    }
-                    echo "</div>\n";
-                    ?>
-                    <div class="col-md-1">
-                        <button type="button" data-toggle="collapse" class="btn-des btn btn-xs btn-info pull-right" id="btn-des<?php echo $r->apunte; ?>" name="des<?php echo $r->apunte; ?>"
-                                data-target="#collapseExample<?php echo $r->apunte; ?>" aria-expanded="false" aria-controls="collapseExample<?php echo $r->apunte; ?>" 
-                                title='Desglose'>
-                            <span class="badge"><?php echo substr_count($r->desglose,':')/2;?></span>
-                        </button>
-                    </div>
-        </div>
-            <div class="row">
-                <div class="collapse col-md-6" id="collapseExample<?php echo $r->apunte; ?>">
-                    <div class="well">
-                          <dl class="dl-horizontal">
+                if (isset($records)) {
+                    $i = 1;
+                    foreach ($records as $r) {
+                        echo "<div class=\"" . ($i++ % 2 == 1 ? "odd" : "even bg-warning") . "\">";
+                        echo "<div class='row'>\n";
+                        $file = "facturas/16" . sprintf("%04d", $r->apunte) . ".pdf";
+                        echo "<div class='col-md-1'><input type='text' size='4' name='apunte[]'  value='" . $r->apunte . "'></div>\n";
+                        echo "<div class='col-md-1'>" . $r->fechaApunte . "<br>";
+                        echo $r->fechaPago . "</div>\n";
+                        echo "<div class='col-md-1'>" . $r->fechaFactura . "</div>\n";
+                        echo "<div class='col-md-1'>" . $r->recurso . "-" . $r->tipo . "-" . $r->destino . "</div>\n";
+                        echo "<div class='col-md-1 ", ($r->tipo == 'Ingreso') ? "text-danger" : "", " text-right'><strong>" . number_format($r->importe, 2, ',', '.') . "</strong></div>\n";
+                        echo "<div class='col-md-3'>" . $r->concepto . "<br>";
+                        echo $r->titular . "</div>\n";
+                        echo "<div class='col-md-2'><input type='text' name='observaciones[]'  value='" . $r->observaciones . "'></div>";
+                        echo "<div class='col-md-1'>";
+                        if (file_exists($file)) {
+                            echo "<a href=\"/php/contabilidad/$file\">";
+                        }
+                        echo $r->tipoDocumento;
+                        if (file_exists($file)) {
+                            echo "</a>";
+                        }
+                        echo "</div>\n";
+                        ?>
+                        <div class="col-md-1">
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-xs btn-info pull-right" id="btn-des<?php echo $r->apunte; ?>" name="des<?php echo $r->apunte; ?>"
+                                    data-target="#collapseExample<?php echo $r->apunte; ?>" aria-expanded="false" aria-controls="collapseExample<?php echo $r->apunte; ?>" 
+                                    title='Desglose'>
+                                <span class="badge"><?php echo substr_count($r->desglose, ':') / 2; ?></span>
+                            </button>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="collapse col-md-6" id="collapseExample<?php echo $r->apunte; ?>">
+                        <div class="well">
+                            <dl class="dl-horizontal">
                                 <?php
                                 if ($r->desglose != "") {
                                     $filas = explode('|', $r->desglose);
@@ -105,24 +111,22 @@ and open the template in the editor.
                                 }
                                 ?>
                             </dl>
-                            <button type="button" class="btn-add" id="btn-add<?php echo $r->apunte;?>" title="Añadir cuenta">+</button>                    
+                            <button type="button" class="btn-add" id="btn-add<?php echo $r->apunte; ?>" title="Añadir cuenta">+</button>                    
+                        </div>
                     </div>
                 </div>
-            </div>
             </div> <!-- fila doble -->
             <?php
-            }//each
-            
-        }//if
-        else {
-            echo "<p> No se encuentran resultados </p>";
-        }
-        
-        ?>
-            
-        <button id="btn-des" class="btn btn-primary" type="submit">Modificar</button>
-    </form>
-    <?php echo $this->pagination->create_links() ?>
+        }//each
+    }//if
+    else {
+        echo "<p> No se encuentran resultados </p>";
+    }
+    ?>
+
+    <button id="btn-des" class="btn btn-primary" type="submit">Modificar</button>
+</form>
+<?php echo $this->pagination->create_links() ?>
 </div>
 </body>
 </html>
