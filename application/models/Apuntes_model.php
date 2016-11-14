@@ -28,12 +28,14 @@ class Apuntes_model extends CI_Model {
         if ($filtro == NULL) $filtro = "";
         $this->db->select('tipo');
         $this->db->select_sum('importe');
-        $this->db->where('apunte >',2);
-        $this->db->where('recurso <>','T');
-        $this->db->like('concepto',$filtro);
-        $this->db->or_like('titular',$filtro);
-        $this->db->or_like('tipoDocumento',$filtro);
-        $this->db->or_like('cuenta',$filtro);    
+        $this->db->where('apunte >',4);
+        $this->db->where('recurso !=','T');
+        $this->db->group_start();               
+            $this->db->like('concepto',$filtro);
+            $this->db->or_like('titular',$filtro);
+            $this->db->or_like('tipoDocumento',$filtro);
+            $this->db->or_like('cuenta',$filtro);
+        $this->db->group_end();
         $this->db->group_by('tipo');
         $consulta = $this->db->get('apuntes');
         $data=[];
@@ -97,6 +99,24 @@ SQL;
             $data[] = $fila;
         }
         return $data;
+    }
+    
+    function estaApunte($anyo, $apunte){
+        $esta=FALSE;
+        $this->db->where("anyo = $anyo AND apunte = $apunte");
+        $consulta = $this->db->get('apuntes');
+        foreach ($consulta->result() as $fila){
+            $esta=TRUE;
+        }
+        return $esta;
+    }
+    
+    function actualizaApunte($anyo, $apunte, $data){
+        $this->db->update('apuntes', $data, "anyo = $anyo AND apunte = $apunte");
+    }
+    
+    function insertaApunte($data){
+        $this->db->insert('apuntes', $data);
     }
 
 }

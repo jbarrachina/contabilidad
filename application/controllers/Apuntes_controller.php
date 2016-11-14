@@ -28,6 +28,56 @@ class Apuntes_controller extends CI_Controller {
         $config['prev_link'] = 'Anterior'; //anterior link
         $this->pagination->initialize($config); //inicializamos la paginación	
     }
+    
+    //pasamos el formato fecha del csv dd/mm/aaaa a aaaa-mm-dd de mysql
+    private function convierteFecha($fechaOriginal) {
+        $vector = explode('/', $fechaOriginal);
+        return $vector[2] . "-" . $vector[1] . "-" . $vector[0];
+    }
+    
+    private function replaceApuntes($campos) {
+        $anyo = 2016;
+        if (count($campos) == 14) {
+            for($i=0;$i<count($campos);$i++){
+                $campos[$i] = ($campos[$i] == "\"" ? substr($campos[$i], 1, -1) : $campos[$i]);
+            }
+            $apunte = $campos[0];
+            $fechaPago = $this->convierteFecha($campos[1]);
+            $fechaApunte = $this->convierteFecha($campos[2]);
+            $fechaFactura = ($campos[3] == "" ? NULL : $this->convierteFecha($campos[3])); //hay valores vacios
+            $tipo = substr($campos[4], 1, -1); //quitamos las comillas
+            $recurso = substr($campos[5], 1, -1);
+            $destino = ($campos[6] == "" ? NULL : substr($campos[6], 1, -1));
+            $cuenta = ($campos[7] == "" ? NULL : substr($campos[7], 1, -1));
+            $importe = (float) str_replace(',', '.', ($campos[8][0] == "\"" ? substr($campos[8], 1, -1) : $campos[8]));
+            $titular = ($campos[9] == "" ? NULL : substr($campos[9], 1, -1));
+            $concepto = ($campos[10] == "" ? NULL : substr($campos[10], 1, -1));
+            $tipoDocumento = ($campos[11] == "" ? NULL : substr($campos[11], 1, -1));
+            $data = array(
+                'anyo' => $anyo,
+                'apunte' => $apunte,
+                'fechaPago' => $fechaPago,
+                'fechaApunte' => $fechaApunte,
+                'fechaFactura' => $fechaFactura,
+                'tipo' => $tipo,
+                'recurso' => $recurso,
+                'destino' => $destino,
+                'cuenta' => $cuenta,
+                'importe' => $importe,
+                'titular' => $titular,
+                'tipoDocumento' => $tipoDocumento,
+                'concepto' => $concepto
+            );
+            if ($this->apuntes_model->estaApunte($anyo,$apunte)){
+                $this->apuntes_model->actualizaApunte($anyo,$apunte,$data);
+            } else {
+                $this->apuntes_model->insertaApunte($data);
+            }
+            
+        } else {
+            // print_r($campos);
+        }      
+    }
 
     public function index() {
         $data['title'] = 'Paginacion_ci';
@@ -74,6 +124,33 @@ class Apuntes_controller extends CI_Controller {
         $this->load->view('Apuntes_view', $data);
     }
 
+    public function importar(){
+        //configuramos los parametros
+        $config['upload_path']          = 'files/'; //la carpeta donde lo guardamos
+        $config['allowed_types']        = 'csv'; //la extensión
+        $config['max_size']             = 500000; //el tamaño máximo
+        $this->load->library('upload', $config);
+        
+        //lo subimos
+        if (!$this->upload->do_upload('userfile')) {
+            $error = array('error' => $this->upload->display_errors());
+            $this->load->view('upload_form', $error);
+        } else {
+            $upload_data = $this->upload->data();
+            $file = fopen('files/' . $upload_data['file_name'], "r");
+            while (!feof($file)) {
+                //replaceApuntes(explode("|", substr(fgets($file), 0, -1))); //quitamos el último carácter que es un espacio en blanco
+                $apunte = substr(fgets($file), 0, -1);
+                //echo $apunte . "<br>";
+                $campos = explode("|", $apunte);
+                $this->replaceApuntes($campos);
+            }
+            fclose($file);
+            $this->index();
+        }
+    }
+    
+    
     public function republic() {
         echo "<br><h1>HAPPY REPUBLIC DAY</h1><br>";
     }

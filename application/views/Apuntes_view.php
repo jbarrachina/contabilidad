@@ -30,9 +30,9 @@ and open the template in the editor.
                     </form>
                 </div>
                 <div class="col-md-5 buscar"> 
-                    <form class="form-inline" name="upload-file"  action="importarApuntes.php" method="post" enctype="multipart/form-data">
+                    <form class="form-inline" name="upload-file"  action="/php/contabilidad/apuntes/importar" method="post" enctype="multipart/form-data">
                         <label class="btn btn-default btn-file">
-                            Selecciona un archivo cvs <input name="userfile" type="file" style="display: none;" >
+                            Selecciona un archivo csv <input name="userfile" type="file" style="display: none;" >
                         </label>
                         <input type="submit" class="btn btn-danger" value="Enviar">
                     </form> 
