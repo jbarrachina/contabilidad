@@ -150,6 +150,11 @@ class Apuntes_controller extends CI_Controller {
         }
     }
     
+    function listado(){
+        $data["records"] = $this->apuntes_model->mostrarDetalle();
+        $this->load->view('listado', $data);
+    }
+    
     
     public function republic() {
         echo "<br><h1>HAPPY REPUBLIC DAY</h1><br>";

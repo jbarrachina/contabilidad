@@ -26,7 +26,14 @@ class Desglose_controller extends CI_Controller {
             'codCuenta' => $this->input->post("cuenta"),
             'importe' => $this->input->post("importe")];      
         $error = $this->desglose_model->addCuentas($data);
-        log_message('info', 'USER_INFO accion ' . 'Location: /php/contabilidad/apuntes/pagina/'.intdiv($data['apunt'],10)*10);
+        //log_message('info', 'USER_INFO accion ' . 'Location: /php/contabilidad/apuntes/pagina/'.intdiv($data['apunt'],10)*10);
         header('Location: /php/contabilidad/apuntes/pagina/'.intdiv($data['apunte'],10)*10);  
+    }
+    
+    public function deleteDesglose(){
+        $apunte = $this->uri->segment(2);
+        $codCuenta = $this->uri->segment(3);        
+        $data = ['anyo'=>2016, 'apunte'=>$apunte,'codCuenta' => $codCuenta];
+        $this->desglose_model->deleteCuentas($data);
     }
 }

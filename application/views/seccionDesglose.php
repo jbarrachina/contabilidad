@@ -6,6 +6,7 @@
             foreach ($filas as $fila) {
                 list($codCuenta, $cuenta, $importe) = explode(':', $fila);
                 echo "<dt>", $cuenta, "</dt><dd>", $importe, "</dd>";
+                echo "<a href='/php/contabilidad/$codCuenta' class='btn btn-default'>borrar</a>";
             }
         }
         ?>

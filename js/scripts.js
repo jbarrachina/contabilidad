@@ -7,7 +7,7 @@
 $(function ()
 {
     $("body").css("font-size", "12px");
-    $(".btn-des").button(
+    $(".btn-delete-desglose").button(
             {
                 icons:
                         {

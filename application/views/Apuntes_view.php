@@ -29,13 +29,16 @@ and open the template in the editor.
                         <a href="<?php echo "/php/contabilidad/apuntes/pagina"; ?>" class="btn btn-primary">Mostrar todo</a>
                     </form>
                 </div>
-                <div class="col-md-5 buscar"> 
+                <div class="col-md-3 buscar"> 
                     <form class="form-inline" name="upload-file"  action="/php/contabilidad/apuntes/importar" method="post" enctype="multipart/form-data">
                         <label class="btn btn-default btn-file">
                             Selecciona un archivo csv <input name="userfile" type="file" style="display: none;" >
                         </label>
                         <input type="submit" class="btn btn-danger" value="Enviar">
                     </form> 
+                </div>
+                <div class="col-md-2 buscar"> 
+                     <a href="<?php echo "/php/contabilidad/apuntes/listado"; ?>" class="btn btn-primary">Ver detalle</a> 
                 </div>
                 <div class="col-md-2">
                     <dl class="dl-horizontal pull-right">
@@ -106,7 +109,10 @@ and open the template in the editor.
                                     $filas = explode('|', $r->desglose);
                                     foreach ($filas as $fila) {
                                         list($codCuenta, $cuenta, $importe) = explode(':', $fila);
-                                        echo "<dt>", $cuenta, "</dt><dd>", $importe, "</dd>";
+                                        echo "<dt>";     
+                                        echo $cuenta, "</dt><dd>", $importe;
+                                        echo " <a href='/php/contabilidad/desglose/".$r->apunte."/".$codCuenta."' class='btn-delete-desglose btn btn-danger btn-xs'>x</a>";
+                                        echo "</dd>";
                                     }
                                 }
                                 ?>

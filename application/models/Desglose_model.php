@@ -24,5 +24,10 @@ class Desglose_model extends CI_Model {
     function addCuentas($data){
         $this->db->replace('desgloses', $data);
     }
+    
+    function deleteCuentas($data){
+        //log_message('info', 'USER_INFO accion ' . 'Location: /desglose/delete/'.$data['apunte']."-".$data['codCuenta']);
+        $this->db->delete('desgloses', $data);
+    }
 
 }

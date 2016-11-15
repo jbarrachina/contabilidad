@@ -59,10 +59,13 @@ $route['apuntes/search'] = 'Apuntes_controller/search';
 $route['apuntes/search/(:any)/(:num)'] = 'Apuntes_controller/search';
 $route['apuntes/search/(:any)'] = 'Apuntes_controller/search';
 $route['apuntes/importar'] = 'Apuntes_controller/importar';
+$route['apuntes/listado'] = 'Apuntes_controller/listado';
 $route['apuntes/republic'] = 'Apuntes_controller/republic';
 
 $route['desglose/(:num)'] = 'Desglose_controller';
 $route['desglose/addDesglose'] = 'Desglose_controller/addDesglose';
+
+$route['desglose/(:num)/(:num)'] = 'Desglose_controller/deleteDesglose';
 
 $route['404_override'] = '';
 
