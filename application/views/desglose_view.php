@@ -13,7 +13,7 @@
     <label for="importe">
         Importe:
     </label>
-    <input type="text" id="importe" name="importe"/> <br/>
+    <input type="text" id="importe" name="importe" value="<?php echo $importe;?>"/> <br/>
     <div class="ui-state-error ui-corner-all" id="contenedorError">
         <p>
             <span class="ui-icon ui-icon-alert iconoError"></span>

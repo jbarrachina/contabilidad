@@ -40,7 +40,7 @@
                             echo $r->apunte;
                             echo "</div>";
                             echo "<div class='col-md-1 pull-right'>";
-                            echo "<span class='pull-right'>",$r->importe,"</span>";
+                            echo "<span class='pull-right'>",number_format($r->importe,2,',','.'),"</span>";
                             echo "</div>";
                             echo "</div>";
                             $subgrupo = $r->descripcion;
@@ -51,7 +51,7 @@
                                 echo $r->apunte;
                                 echo "</div>";
                                 echo "<div class='col-md-1 pull-right'>";
-                                echo "<span class='pull-right'>", $r->importe, "</span>";
+                                echo "<span class='pull-right'>", number_format($r->importe,2,',','.'), "</span>";
                                 echo "</div>";
                             } else {
                                 echo "<div class='col-md-4 col-md-offset-7 bg-info'>";
@@ -70,7 +70,7 @@
                         echo "<div class='col-md-4 col-md-offset-7 bg-primary'>";
                         echo "<h5 class='bg-primary'>Total $grupo: </ht>";
                         echo "</div>";
-                        echo "<div class='col-md-1 bg-primary'><h5 class='pull-right bg-primary'>",$r->importe,"</h5>";
+                        echo "<div class='col-md-1 bg-primary'><h5 class='pull-right bg-primary'>",number_format($r->importe,2,',','.'),"</h5>";
                         echo "</div>";
                         echo "</div>";
                         echo "</div>";

@@ -119,15 +119,27 @@ SQL;
         $this->db->insert('apuntes', $data);
     }
     
+    function getImporte($apunte){
+        $importe = 0;
+        $this->db->where("anyo = 2016 AND apunte = $apunte");
+        $consulta = $this->db->get('apuntes');
+        foreach ($consulta->result() as $fila){
+            $importe = $fila->importe;
+        }
+        return $importe;
+    }
+    
     function mostrarDetalle(){
         $sql = <<< SQL
-        SELECT  c2.descripcion as grupo, cuentas.descripcion,  apuntes.apunte, sum(desgloses.Importe) as importe
+        SELECT  c2.descripcion as grupo, cuentas.descripcion,  
+            CONCAT(apuntes.apunte,':',apuntes.concepto," ",apuntes.titular) as apunte, 
+            sum(desgloses.Importe) as importe
         FROM apuntes 
         LEFT JOIN desgloses ON apuntes.anyo = desgloses.anyo AND apuntes.apunte = desgloses.apunte
         LEFT JOIN cuentas ON cuentas.codCuenta = desgloses.codCuenta
         LEFT JOIN cuentas as c2 ON c2.codCuenta = conv(concat(LEFT(lpad(conv(desgloses.codCuenta,10,2),8,0),4),'0000'),2,10)
         WHERE cuentas.descripcion IS NOT NULL AND tipo='Gasto'
-        GROUP BY c2.descripcion, cuentas.descripcion, apuntes.apunte WITH ROLLUP
+        GROUP BY c2.descripcion, cuentas.descripcion, apunte WITH ROLLUP
 SQL;
         $consulta = $this->db->query($sql);
         if ($consulta->num_rows() > 0) {

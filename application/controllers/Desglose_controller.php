@@ -17,6 +17,8 @@ class Desglose_controller extends CI_Controller {
     public function index() {
         $data["cuentas"] = $this->desglose_model->getCuentas();
         $data["apunte"]=$this->uri->segment(2); //el parámetro apunte
+        $this->load->model('apuntes_model');
+        $data["importe"]=$this->apuntes_model->getImporte($data["apunte"]);
         $this->load->view('desglose_view',$data);
     }
     
@@ -24,7 +26,8 @@ class Desglose_controller extends CI_Controller {
         $this->load->model("desglose_model");
         $data = ['anyo'=>2016, 'apunte'=>$this->input->post("apunte"),
             'codCuenta' => $this->input->post("cuenta"),
-            'importe' => $this->input->post("importe")];      
+            'importe' => $this->input->post("importe")]; 
+        
         $error = $this->desglose_model->addCuentas($data);
         //log_message('info', 'USER_INFO accion ' . 'Location: /php/contabilidad/apuntes/pagina/'.intdiv($data['apunt'],10)*10);
         header('Location: /php/contabilidad/apuntes/pagina/'.intdiv($data['apunte'],10)*10);  
