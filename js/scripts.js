@@ -15,7 +15,7 @@ $(function ()
                         },
                 text: false
             });
-    $(".btn-add").button(
+    $("button.btn-delete-desglose").button(
             {
                 icons:
                         {
@@ -66,6 +66,27 @@ $(function ()
                     }
                 }
         );
+    }
+    
+    
+    $('button.btn-delete-desglose').on("click", deleteDesglose);
+    
+    function deleteDesglose(event){
+        var my_url = $(this).attr("id").substring(2).split("-");
+        $.getJSON("/php/contabilidad/desglose/"+my_url[0]+"/"+my_url[1], {}, function (datos) {
+            //no hace nada
+        }).done(function (datos) {
+            $("#dt"+my_url[0]+"-"+my_url[1]).remove();
+            $("#dd"+my_url[0]+"-"+my_url[1]).remove();
+            var num_desgloses = $("#btn-des"+my_url[0]).children('span').html();
+            num_desgloses--;
+            $("#btn-des"+my_url[0]).children('span').html(num_desgloses);
+            //$("bt"+my_url[0]+"-"+my_url[1]).remove();
+            
+        }).fail(function () {
+            alert('Error en la conexión con el servidor');
+        });
+        return false;
     }
 
 

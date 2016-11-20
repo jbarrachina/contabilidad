@@ -132,7 +132,7 @@ SQL;
     function mostrarDetalle(){
         $sql = <<< SQL
         SELECT  c2.descripcion as grupo, cuentas.descripcion,  
-            CONCAT(apuntes.apunte,':',apuntes.concepto," ",apuntes.titular) as apunte, 
+            CONCAT(LPAD(apuntes.apunte,6,'0'),':',apuntes.concepto," ",apuntes.titular) as apunte, 
             sum(desgloses.Importe) as importe
         FROM apuntes 
         LEFT JOIN desgloses ON apuntes.anyo = desgloses.anyo AND apuntes.apunte = desgloses.apunte

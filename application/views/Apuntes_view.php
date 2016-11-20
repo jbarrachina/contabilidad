@@ -109,9 +109,9 @@ and open the template in the editor.
                                     $filas = explode('|', $r->desglose);
                                     foreach ($filas as $fila) {
                                         list($codCuenta, $cuenta, $importe) = explode(':', $fila);
-                                        echo "<dt>";     
-                                        echo $cuenta, "</dt><dd>", $importe;
-                                        echo " <a href='/php/contabilidad/desglose/".$r->apunte."/".$codCuenta."' class='btn-delete-desglose btn btn-danger btn-xs'>x</a>";
+                                        echo "<dt id='dt{$r->apunte}-{$codCuenta}'>";     
+                                        echo $cuenta, "</dt><dd id='dd{$r->apunte}-{$codCuenta}'>", $importe;
+                                        echo " <button id='bt{$r->apunte}-{$codCuenta}' class='btn-delete-desglose btn btn-danger btn-xs'>x</button>";
                                         echo "</dd>";
                                     }
                                 }

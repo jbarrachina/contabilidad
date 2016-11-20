@@ -38,5 +38,8 @@ class Desglose_controller extends CI_Controller {
         $codCuenta = $this->uri->segment(3);        
         $data = ['anyo'=>2016, 'apunte'=>$apunte,'codCuenta' => $codCuenta];
         $this->desglose_model->deleteCuentas($data);
+        //log_message('info', 'USER_INFO accion ' .$apunte."-".$codCuenta);
+        header('Content-type: application/json');
+        echo json_encode(true);
     }
 }

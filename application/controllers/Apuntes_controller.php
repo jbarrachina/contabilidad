@@ -37,7 +37,7 @@ class Apuntes_controller extends CI_Controller {
     
     private function replaceApuntes($campos) {
         $anyo = 2016;
-        if (count($campos) == 14) {
+        if (count($campos) == 14 || count($campos) == 13) {
             for($i=0;$i<count($campos);$i++){
                 $campos[$i] = ($campos[$i] == "\"" ? substr($campos[$i], 1, -1) : $campos[$i]);
             }
@@ -76,6 +76,7 @@ class Apuntes_controller extends CI_Controller {
             
         } else {
             // print_r($campos);
+            //log_message('info', 'USER_INFO import ' . count($campos));
         }      
     }
 
@@ -116,7 +117,7 @@ class Apuntes_controller extends CI_Controller {
         $apuntedeinicio = ($apuntes[0] > 0) ? $apuntes[0] - 1 : 0;
         $config['cur_page'] = $apuntedeinicio;
         $this->pagination->initialize($config);
-        log_message('info', 'USER_INFO accion ' . $apuntedeinicio);
+        //log_message('info', 'USER_INFO accion ' . $apuntedeinicio);
         $this->apuntes_model->actualizarObservaciones($apuntes, $observaciones);
         //volver a la pantalla de partida
         $data["records"] = $this->apuntes_model->total_paginados($this->pages, $apuntedeinicio);
@@ -134,6 +135,7 @@ class Apuntes_controller extends CI_Controller {
         //lo subimos
         if (!$this->upload->do_upload('userfile')) {
             $error = array('error' => $this->upload->display_errors());
+            log_message('error','USER_INFO subir archivo '.$error);
             $this->load->view('upload_form', $error);
         } else {
             $upload_data = $this->upload->data();
@@ -143,6 +145,7 @@ class Apuntes_controller extends CI_Controller {
                 $apunte = substr(fgets($file), 0, -1);
                 //echo $apunte . "<br>";
                 $campos = explode("|", $apunte);
+                log_message('error','USER_INFO  importar '.$apunte);
                 $this->replaceApuntes($campos);
             }
             fclose($file);

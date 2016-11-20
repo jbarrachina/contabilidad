@@ -58,7 +58,7 @@
                                 echo "Total $subgrupo:";
                                 echo "</div>";
                                 echo "<div class='col-md-1 pull-right bg-info'>";
-                                echo "<span class='pull-right'><strong class='bg-info'>", $r->importe, "</strong></span>";
+                                echo "<span class='pull-right'><strong class='bg-info'>", number_format($r->importe,2,',','.'), "</strong></span>";
                                 echo "</div>";
                             }
 
