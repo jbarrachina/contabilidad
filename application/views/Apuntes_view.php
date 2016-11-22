@@ -42,13 +42,9 @@ and open the template in the editor.
                 </div>
                 <div class="col-md-2">
                     <dl class="dl-horizontal pull-right">
-                        <?php
-                        if (isset($total[0])) {
-                            echo "<dt><h4>", $total[0]->tipo, "</h4></dt><dd><h4><span class='label label-success'>", number_format($total[0]->importe, 2, ",", "."), "</span></h4></dd>";
-                        }
-                        if (isset($total[1])) {
-                            echo "<dt><h4>", $total[1]->tipo, "</h4></dt><dd><h4><span class='label label-danger'>", number_format($total[1]->importe, 2, ',', '.'), "</span></h4></dd>";
-                        }
+                        <?php                       
+                            echo "<dt><h4>Ingreso</h4></dt><dd><h4><span class='label label-success'>", number_format($total['Ingreso'], 2, ",", "."), "</span></h4></dd>";                   
+                            echo "<dt><h4>Gasto</h4></dt><dd><h4><span class='label label-danger'>", number_format($total['Gasto'], 2, ',', '.'), "</span></h4></dd>";
                         ?>
                     </dl>
                 </div>

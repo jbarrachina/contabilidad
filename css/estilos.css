@@ -19,3 +19,7 @@ and open the template in the editor.
 .titulos{
     margin-bottom: 5px;
 }
+
+.listado-striped{
+    background-color: #EEE;
+}

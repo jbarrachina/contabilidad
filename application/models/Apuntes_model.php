@@ -38,10 +38,16 @@ class Apuntes_model extends CI_Model {
         $this->db->group_end();
         $this->db->group_by('tipo');
         $consulta = $this->db->get('apuntes');
-        $data=[];
+        $data=['Ingreso' => 0,'Gasto' => 0];
         foreach ($consulta->result() as $fila){
-            $data[]=$fila;
-            log_message('info', 'USER_INFO totalpaginados '.$fila->importe);
+            if ($fila->tipo=='Ingreso' ){
+                $data['Ingreso']+=$fila->importe;
+            }
+            else
+            {
+                $data['Gasto']=$fila->importe;
+            }
+            //log_message('info', 'USER_INFO totalpaginados '.$fila->tipo." - ".$fila->importe);
         }
         return $data;
     }

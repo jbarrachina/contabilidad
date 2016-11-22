@@ -31,30 +31,45 @@
                     if (isset($r->descripcion)) {
                         if ($r->descripcion != $subgrupo) {
                             echo "<div class='row'> ";
-                            echo "<div class='col-md-10 col-md-offset-2'>";
+                            echo "<div class='col-md-11 col-md-offset-1'>";
                             echo "<h5 class='bg-info'>",$r->descripcion,"</h5>";
                             echo "</div>";
                             echo "</div>";
                             echo "<div class='row'> ";
-                            echo "<div class='col-md-6 col-md-offset-4'>";
-                            echo $r->apunte;
+                            echo "<div class='col-md-9 col-md-offset-2'>";
+                            //separar apunte de descripción.
+                            $campos = explode(":", $r->apunte);
+                            //enlace
+                            $pagina = intdiv($campos[0],10)*10;
+                            echo "<a href='/php/contabilidad/apuntes/pagina/".$pagina."'>{$campos[0]}</a> -> {$campos[1]}";
+                            //echo $r->apunte;
                             echo "</div>";
                             echo "<div class='col-md-1 pull-right'>";
                             echo "<span class='pull-right'>",number_format($r->importe,2,',','.'),"</span>";
                             echo "</div>";
                             echo "</div>";
                             $subgrupo = $r->descripcion;
+                            $i=1; //iniciar striped
                         } else {
-                            echo "<div class='row'> ";
+                            
                             if (isset($r->apunte)) {
-                                echo "<div class='col-md-6 col-md-offset-4'>";
-                                echo $r->apunte;
+                                 $i++; //iniciar striped
+                                echo "<div class='row ".($i%2==0?'listado-striped':"")."'> ";
+                                echo "<div class='col-md-9 col-md-offset-2'>";
+                                //separar apunte de descripción.
+                                $campos = explode(":", $r->apunte);
+                                //enlace
+                                $pagina = intdiv($campos[0],10)*10;
+                               
+                                echo "<a href='/php/contabilidad/apuntes/pagina/".$pagina."'>{$campos[0]}</a> -> {$campos[1]}";
+                                //echo $r->apunte;
                                 echo "</div>";
                                 echo "<div class='col-md-1 pull-right'>";
                                 echo "<span class='pull-right'>", number_format($r->importe,2,',','.'), "</span>";
                                 echo "</div>";
                             } else {
-                                echo "<div class='col-md-4 col-md-offset-7 bg-info'>";
+                                echo "<div class='row'> ";
+                                echo "<div class='col-md-5 col-md-offset-6 bg-info'>";
                                 echo "Total $subgrupo:";
                                 echo "</div>";
                                 echo "<div class='col-md-1 pull-right bg-info'>";
