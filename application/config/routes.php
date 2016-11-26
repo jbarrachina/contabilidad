@@ -67,6 +67,11 @@ $route['desglose/addDesglose'] = 'Desglose_controller/addDesglose';
 
 $route['desglose/(:num)/(:num)'] = 'Desglose_controller/deleteDesglose';
 
+
+$route['fotocopias/familias/(:num)/(:num)'] = 'Fotocopias_controller/porFamilias';
+$route['fotocopias/profesores/(:num)/(:num)/(:any)'] = 'Fotocopias_controller/porProfesores';
+
+
 $route['404_override'] = '';
 
 $route['translate_uri_dashes'] = FALSE;

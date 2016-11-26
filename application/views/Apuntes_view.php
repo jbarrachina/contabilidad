@@ -38,7 +38,8 @@ and open the template in the editor.
                     </form> 
                 </div>
                 <div class="col-md-2 buscar"> 
-                     <a href="<?php echo "/php/contabilidad/apuntes/listado"; ?>" class="btn btn-primary">Ver detalle</a> 
+                     <a href="/php/contabilidad/apuntes/listado" class="btn btn-primary btn-xs">Resumen</a>
+                     <a href="/php/contabilidad/fotocopias/familias/201601/<?php echo date('Ym'); ?>" class="btn btn-primary btn-xs">Fotocopias</a>
                 </div>
                 <div class="col-md-2">
                     <dl class="dl-horizontal pull-right">
