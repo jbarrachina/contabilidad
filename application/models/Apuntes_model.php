@@ -84,6 +84,7 @@ SQL;
     }
 
     function updateObservaciones($apunte,$observaciones) {
+        log_message('error','USER_INFO updateObservaciones: '.$apunte." - ".$observaciones);
         $this->db->set('observaciones', $observaciones);
         $this->db->where('anyo', 2016);
         $this->db->where('apunte', $apunte);
@@ -93,7 +94,7 @@ SQL;
     function actualizarObservaciones($apuntes,$observaciones) {
         for($i=0;$i<count($apuntes);$i++) {
             $this->updateObservaciones($apuntes[$i],$observaciones[$i]);
-            log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
+            //log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
         }
         
     }

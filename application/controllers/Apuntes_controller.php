@@ -124,6 +124,14 @@ class Apuntes_controller extends CI_Controller {
         $data["total"] = $this->apuntes_model->suma();
         $this->load->view('Apuntes_view', $data);
     }
+    
+    function actualizaObservaciones(){
+        $apunte = $this->uri->segment(3);
+        $observaciones = $this->input->post('observaciones');
+        $this->apuntes_model->updateObservaciones($apunte,$observaciones);
+        header('Content-type: application/json');
+        echo json_encode(true);
+    }
 
     public function importar(){
         //configuramos los parametros

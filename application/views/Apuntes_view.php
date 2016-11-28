@@ -78,7 +78,9 @@ and open the template in the editor.
                         echo "<div class='col-md-1 ", ($r->tipo == 'Ingreso') ? "text-danger" : "", " text-right'><strong>" . number_format($r->importe, 2, ',', '.') . "</strong></div>\n";
                         echo "<div class='col-md-3'>" . $r->concepto . "<br>";
                         echo $r->titular . "</div>\n";
-                        echo "<div class='col-md-2'><input type='text' name='observaciones[]'  value='" . $r->observaciones . "'></div>";
+                        echo "<div class='col-md-2'><input id='it-observaciones-".$r->apunte." type='text' name='observaciones[]'  value='" . $r->observaciones . "'>";
+                        echo "<button id='btuo-{$r->apunte}' class='btn-update-observaciones btn btn-success btn-xs'>v</button>";
+                        echo "</div>";
                         echo "<div class='col-md-1'>";
                         if (file_exists($file)) {
                             echo "<a href=\"/php/contabilidad/$file\">";

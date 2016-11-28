@@ -70,6 +70,7 @@ $(function ()
     
     
     $('button.btn-delete-desglose').on("click", deleteDesglose);
+    $('button.btn-update-observaciones').on("click", updateObservaciones);
     
     function deleteDesglose(event){
         var my_url = $(this).attr("id").substring(2).split("-");
@@ -85,6 +86,19 @@ $(function ()
             
         }).fail(function () {
             alert('Error en la conexión con el servidor');
+        });
+        return false;
+    }
+    
+    function updateObservaciones(event){
+        var apunte = $(this).attr("id").substring(5);
+        var observaciones = $('it-observaciones-'+apunte).attr("id").value();
+        $.getJSON("/php/contabilidad/apuntes/observaciones/"+apunte, {"observaciones":observaciones}, function (datos){
+            //res
+        }).done(function (datos) {
+            //res
+        }).fail(function () {
+            alert('Error en la conexión con el servidor');    
         });
         return false;
     }
