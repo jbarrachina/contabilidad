@@ -92,7 +92,7 @@ $(function ()
     
     function updateObservaciones(event){
         var apunte = $(this).attr("id").substring(5);
-        var observaciones = $('it-observaciones-'+apunte).attr("id").value();
+        var observaciones = $('#it-observaciones-'+apunte).val();
         $.getJSON("/php/contabilidad/apuntes/observaciones/"+apunte, {"observaciones":observaciones}, function (datos){
             //res
         }).done(function (datos) {

@@ -127,7 +127,8 @@ class Apuntes_controller extends CI_Controller {
     
     function actualizaObservaciones(){
         $apunte = $this->uri->segment(3);
-        $observaciones = $this->input->post('observaciones');
+        $observaciones = $this->input->get('observaciones');
+        log_message('error','USER_INFO actualizaObservaciones: '.$apunte." - ".$observaciones);
         $this->apuntes_model->updateObservaciones($apunte,$observaciones);
         header('Content-type: application/json');
         echo json_encode(true);

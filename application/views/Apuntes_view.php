@@ -51,17 +51,16 @@ and open the template in the editor.
                 </div>
 
             </div>
-            <form name="tabla" action="/php/contabilidad/apuntes/accion" method="POST">          
+                    
                 <div class="row bg-primary titulos">
                     <div class="col-md-1"><br><h4>Orden</h4></div>
                     <div class="col-md-1"><h4>Apunte Pago</h4></div>
                     <div class="col-md-1"><h4>Fecha Factura</h4></div>
                     <div class="col-md-1"><br><h4>Tipo</h4></div>
-                    <div class="col-md-1"><br><h4>Importe</h4></div>
-                    <div class="col-md-3"><br><h4>Concepto</h4></div>
-                    <div class="col-md-2"><br><h4>Observaciones</h4></div>
-                    <div class="col-md-1"><br><h4>Documento</h4></div>
-                    <div class="col-md-1"></div>
+                    
+                    <div class="col-md-5"><br><h4>Concepto</h4></div>
+                    <div class="col-md-3"><br><h4>Observaciones</h4></div>                  
+                    
                 </div>
                 <?php
                 if (isset($records)) {
@@ -74,30 +73,33 @@ and open the template in the editor.
                         echo "<div class='col-md-1'>" . $r->fechaApunte . "<br>";
                         echo $r->fechaPago . "</div>\n";
                         echo "<div class='col-md-1'>" . $r->fechaFactura . "</div>\n";
-                        echo "<div class='col-md-1'>" . $r->recurso . "-" . $r->tipo . "-" . $r->destino . "</div>\n";
-                        echo "<div class='col-md-1 ", ($r->tipo == 'Ingreso') ? "text-danger" : "", " text-right'><strong>" . number_format($r->importe, 2, ',', '.') . "</strong></div>\n";
-                        echo "<div class='col-md-3'>" . $r->concepto . "<br>";
-                        echo $r->titular . "</div>\n";
-                        echo "<div class='col-md-2'><input id='it-observaciones-".$r->apunte." type='text' name='observaciones[]'  value='" . $r->observaciones . "'>";
-                        echo "<button id='btuo-{$r->apunte}' class='btn-update-observaciones btn btn-success btn-xs'>v</button>";
-                        echo "</div>";
-                        echo "<div class='col-md-1'>";
+                        echo "<div class='col-md-1'>" . $r->recurso . "-" . $r->tipo . "-" . $r->destino . "<br>\n";
+                        echo "<span class='", ($r->tipo == 'Ingreso') ? "text-danger" : "", " text-right'><strong>" . number_format($r->importe, 2, ',', '.') . "</strong></span></div>\n";
+                        echo "<div class='col-md-5'>" . $r->concepto . "<br>";
+                        echo $r->titular . "<br>\n";
+                        echo $r->cuenta . "</div>\n"; 
+                        echo "<div class='col-md-3'>";
                         if (file_exists($file)) {
-                            echo "<a href=\"/php/contabilidad/$file\">";
+                            echo "<a href=\"/php/contabilidad/$file\" target='_blank'>";
                         }
                         echo $r->tipoDocumento;
                         if (file_exists($file)) {
                             echo "</a>";
                         }
-                        echo "</div>\n";
+                        
                         ?>
-                        <div class="col-md-1">
-                            <button type="button" data-toggle="collapse" class="btn-des btn btn-xs btn-info pull-right" id="btn-des<?php echo $r->apunte; ?>" name="des<?php echo $r->apunte; ?>"
+                        <div class="input-group">
+                            <input id="<?php echo "it-observaciones-".$r->apunte;?>" type="text" class="it-observaciones"  value="<?php echo $r->observaciones;?>">
+                            <button id="<?php echo "btuo-".$r->apunte;?>" class="btn-update-observaciones btn btn-xs">
+                            <span class='glyphicon glyphicon-save' aria-hidden='true'></span>
+                            </button>
+                            <button type="button" data-toggle="collapse" class="btn-des btn btn-xs btn-info" id="btn-des<?php echo $r->apunte; ?>" name="des<?php echo $r->apunte; ?>"
                                     data-target="#collapseExample<?php echo $r->apunte; ?>" aria-expanded="false" aria-controls="collapseExample<?php echo $r->apunte; ?>" 
-                                    title='Desglose'>
+                                    title="Desglose>
                                 <span class="badge"><?php echo substr_count($r->desglose, ':') / 2; ?></span>
                             </button>
                         </div>
+                    </div>                        
                 </div>
                 <div class="row">
                     <div class="collapse col-md-6" id="collapseExample<?php echo $r->apunte; ?>">
@@ -127,11 +129,7 @@ and open the template in the editor.
     else {
         echo "<p> No se encuentran resultados </p>";
     }
-    ?>
-
-    <button id="btn-des" class="btn btn-primary" type="submit">Modificar</button>
-</form>
-<?php echo $this->pagination->create_links() ?>
+    echo $this->pagination->create_links() ?>
 </div>
 </body>
 </html>

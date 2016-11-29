@@ -94,7 +94,7 @@ SQL;
     function actualizarObservaciones($apuntes,$observaciones) {
         for($i=0;$i<count($apuntes);$i++) {
             $this->updateObservaciones($apuntes[$i],$observaciones[$i]);
-            //log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
+            log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
         }
         
     }
