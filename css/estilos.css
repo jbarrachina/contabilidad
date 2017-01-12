@@ -8,16 +8,47 @@ and open the template in the editor.
     Author     : jose
 */
 
-.buscar{
-    padding-top: 40px;
+dl{
+    margin-bottom: 0px;
 }
 
-.header{
-    height: 98px;
+.buscar{
+    padding-top: 10px;
+}
+
+.header {  
+    background-color: #313131;
+}
+
+.header h2{
+    color:white;
+}
+
+.sub-header{  
+    background-color: #999;
 }
 
 .titulos{
     margin-bottom: 5px;
+}
+
+.logo-navigation{
+    background-color: #be1622;
+    opacity: .95;
+}
+.menu{
+    list-style: none;
+}
+
+.menu li{
+    float: left;
+}
+
+.menu li a {
+    color: white;
+    padding: .6em 1em;
+    display: block;
+    font-size: 16px;
 }
 
 .listado-striped{

@@ -13,10 +13,19 @@ class Apuntes_controller extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        //$this->load->library('../controllers/Desglose_controller.php'); Unable to locate the specified class: Session.php
+        $this->load->library('ion_auth');
         $this->load->helper('url');
         $this->load->model('apuntes_model');
+        $this->load->library('session');
         $this->load->library('pagination'); //Cargamos la librería de paginación
+        if($this->ion_auth->logged_in()===FALSE)
+        {
+          redirect('auth/login');
+        }
+        if ( null === $this->session->userdata('anyo')){
+              $this->session->set_userdata('anyo', 2016);
+        }
+        //$this->load->library('../controllers/Desglose_controller.php'); Unable to locate the specified class: Session.php     
         $config['base_url'] = base_url() . 'apuntes/pagina/'; // parametro base de la aplicación, si tenemos un .htaccess nos evitamos el index.php
         $config['total_rows'] = $this->apuntes_model->filas(); //calcula el número de filas  
         $config['per_page'] = $this->pages; //Número de registros mostrados por páginas
@@ -26,7 +35,8 @@ class Apuntes_controller extends CI_Controller {
         $config["uri_segment"] = 3; //el segmento de la paginación
         $config['next_link'] = 'Siguiente'; //siguiente link
         $config['prev_link'] = 'Anterior'; //anterior link
-        $this->pagination->initialize($config); //inicializamos la paginación	
+        $this->pagination->initialize($config); //inicializamos la paginación    
+        log_message('info', 'USER_INFO new_year ' . $this->session->userdata('anyo'));
     }
     
     //pasamos el formato fecha del csv dd/mm/aaaa a aaaa-mm-dd de mysql
@@ -36,7 +46,7 @@ class Apuntes_controller extends CI_Controller {
     }
     
     private function replaceApuntes($campos) {
-        $anyo = 2016;
+        $anyo = $this->session->userdata('anyo');
         if (count($campos) == 14 || count($campos) == 13) {
             for($i=0;$i<count($campos);$i++){
                 $campos[$i] = ($campos[$i] == "\"" ? substr($campos[$i], 1, -1) : $campos[$i]);
@@ -81,7 +91,8 @@ class Apuntes_controller extends CI_Controller {
     }
 
     public function index() {
-        $data['title'] = 'Paginacion_ci';
+        $data['title'] = 'Contabilidad '.$this->session->userdata('anyo');
+        $this->load->view('common/cabecera', $data);
         $config['total_rows'] = $this->apuntes_model->filas();
         $config['base_url'] = base_url() . 'apuntes/pagina/';
         $config["uri_segment"] = 3;
@@ -97,6 +108,8 @@ class Apuntes_controller extends CI_Controller {
 
     public function search() {
         // get search string
+        $data['title'] = 'Contabilidad '.$this->session->userdata('anyo');
+        $this->load->view('common/cabecera', $data);
         $search = ($this->input->post("search")) ? $this->input->post("search") : "NIL";
         $search = ($this->uri->segment(3)) ? $this->uri->segment(3) : $search;
         $config['base_url'] =  base_url() . "apuntes/search/$search/";
@@ -128,7 +141,7 @@ class Apuntes_controller extends CI_Controller {
     function actualizaObservaciones(){
         $apunte = $this->uri->segment(3);
         $observaciones = $this->input->get('observaciones');
-        log_message('error','USER_INFO actualizaObservaciones: '.$apunte." - ".$observaciones);
+        //log_message('error','USER_INFO actualizaObservaciones: '.$apunte." - ".$observaciones);
         $this->apuntes_model->updateObservaciones($apunte,$observaciones);
         header('Content-type: application/json');
         echo json_encode(true);
@@ -154,7 +167,7 @@ class Apuntes_controller extends CI_Controller {
                 $apunte = substr(fgets($file), 0, -1);
                 //echo $apunte . "<br>";
                 $campos = explode("|", $apunte);
-                log_message('error','USER_INFO  importar '.$apunte);
+                log_message('info','USER_INFO  importar '.$apunte);
                 $this->replaceApuntes($campos);
             }
             fclose($file);
@@ -163,8 +176,19 @@ class Apuntes_controller extends CI_Controller {
     }
     
     function listado(){
+        $data['title'] = 'Resumen '.$this->session->userdata('anyo');
+        $this->load->view('common/cabecera', $data);
         $data["records"] = $this->apuntes_model->mostrarDetalle();
         $this->load->view('listado', $data);
+    }
+    
+    
+    function change_year(){
+        $this->session->set_userdata('anyo',$this->uri->segment(3));
+        //header('Content-type: application/json');
+        //echo json_encode(true);
+        //redirect('/php/contabilidad/apuntes');
+        header('Location: /php/contabilidad/apuntes');
     }
     
     

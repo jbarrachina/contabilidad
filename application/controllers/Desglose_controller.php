@@ -24,7 +24,7 @@ class Desglose_controller extends CI_Controller {
     
     public function addDesglose(){
         $this->load->model("desglose_model");
-        $data = ['anyo'=>2016, 'apunte'=>$this->input->post("apunte"),
+        $data = ['anyo'=>$this->session->userdata('anyo'), 'apunte'=>$this->input->post("apunte"),
             'codCuenta' => $this->input->post("cuenta"),
             'importe' => $this->input->post("importe")]; 
         
@@ -36,7 +36,7 @@ class Desglose_controller extends CI_Controller {
     public function deleteDesglose(){
         $apunte = $this->uri->segment(2);
         $codCuenta = $this->uri->segment(3);        
-        $data = ['anyo'=>2016, 'apunte'=>$apunte,'codCuenta' => $codCuenta];
+        $data = ['anyo'=>$this->session->userdata('anyo'), 'apunte'=>$apunte,'codCuenta' => $codCuenta];
         $this->desglose_model->deleteCuentas($data);
         //log_message('info', 'USER_INFO accion ' .$apunte."-".$codCuenta);
         header('Content-type: application/json');

@@ -15,11 +15,18 @@ class Fotocopias_controller extends CI_Controller{
     //put your code here
     function __construct() {
         parent::__construct();
+        $this->load->library('ion_auth');
+        if($this->ion_auth->logged_in()===FALSE)
+        {
+          redirect('auth/login');
+        }
         $this->load->helper('url');
         $this->load->model('fotocopias_model');
     }
     
     function porFamilias(){
+        $data['title'] = 'Resumen de fotocopias ';
+        $this->load->view('common/cabecera', $data);
         $desde = $this->uri->segment(3);
         $hasta = $this->uri->segment(4);
         $data['gastos'] = $this->fotocopias_model->getporFamilias($desde, $hasta);
@@ -28,6 +35,8 @@ class Fotocopias_controller extends CI_Controller{
     }
     
     function porProfesores(){
+        $data['title'] = 'Fotocopias por profesor ';
+        $this->load->view('common/cabecera', $data);
         $desde = $this->uri->segment(3);
         $hasta = $this->uri->segment(4);
         $fam = $this->uri->segment(5);

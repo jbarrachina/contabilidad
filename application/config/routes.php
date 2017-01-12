@@ -61,6 +61,7 @@ $route['apuntes/search/(:any)/(:num)'] = 'Apuntes_controller/search';
 $route['apuntes/search/(:any)'] = 'Apuntes_controller/search';
 $route['apuntes/importar'] = 'Apuntes_controller/importar';
 $route['apuntes/listado'] = 'Apuntes_controller/listado';
+$route['apuntes/change_year/(:num)'] = 'Apuntes_controller/change_year';
 $route['apuntes/republic'] = 'Apuntes_controller/republic';
 
 $route['desglose/(:num)'] = 'Desglose_controller';

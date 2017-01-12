@@ -1,21 +1,3 @@
-<html lang="es">
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="http://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>
-        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" />
-
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
-        <link rel="stylesheet" href="/php/contabilidad/css/estilos.css">
-        <script src="/php/contabilidad/js/scripts.js" type="text/javascript"></script>
-        <title>Apuntes</title>
-    </head>
-    <body>
-        <div class="container">
-            <h2>Listado</h2>
                 <?php
                 $grupo = "";
                 $subgrupo = "";
@@ -83,13 +65,13 @@
                             }
                         }
                     } else {
-                        echo "<div class='row'> ";
-                        echo "<div class='bg-primary'>";
-                        echo "<div class='col-md-4 col-md-offset-6 bg-primary'>";
-                        echo "<h5 class='bg-primary'>Total $grupo: </ht>";
+                        echo "<div class='row '> ";
+                        echo "<div class='bg-danger'>";
+                        echo "<div class='col-md-4 col-md-offset-6 bg-danger'>";
+                        echo "<h5>Total $grupo: </ht>";
                         echo "</div>";
-                        echo "<div class='col-md-2 bg-primary'><h5 class='pull-right bg-primary'>",number_format($r->importe,2,',','.'),"</h5>";
-                        echo "<div class='col-md-2 bg-primary'><h6 class='pull-right bg-primary'>",number_format($r->importe/$total*100,2,',','.'),"%</h6>";                       
+                        echo "<div class='col-md-2 bg-danger'><h5 class='pull-right '>",number_format($r->importe,2,',','.'),"</h5>";
+                        echo "<div class='col-md-2 bg-danger'><h6 class='pull-right '>",number_format($r->importe/$total*100,2,',','.'),"%</h6>";                       
                         echo "</div>";
                         echo "</div>";
                         echo "</div>";

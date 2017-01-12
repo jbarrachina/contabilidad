@@ -14,13 +14,20 @@ class Apuntes_model extends CI_Model {
 
     //obtenemos el total de filas para hacer la paginación
     function filas($filtro = NULL) {
-        if ($filtro == NULL) $filtro = "";
+        if ($filtro === NULL) $filtro = "";
+        $this->db->from('apuntes');
+        $this->db->where('anyo',$this->session->userdata('anyo'));
+        $this->db->group_start();
         $this->db->like('concepto',$filtro);
         $this->db->or_like('titular',$filtro);
         $this->db->or_like('tipoDocumento',$filtro);
         $this->db->or_like('cuenta',$filtro);
-        $consulta = $this->db->get('apuntes');
-        return $consulta->num_rows();
+        $this->db->group_end();
+        //log_message('info', 'USER_INFO '.$this->db->get_compiled_select('apuntes'));       
+        //$consulta = $this->db->get('apuntes');
+        $filas = $this->db->count_all_results();
+        log_message('info', 'USER_INFO filas: '.$filas);
+        return $filas;
     }
     
     //obtenemos el total de filas para hacer la paginación
@@ -30,6 +37,7 @@ class Apuntes_model extends CI_Model {
         $this->db->select_sum('importe');
         $this->db->where('apunte >',4);
         $this->db->where('recurso !=','T');
+        $this->db->where('anyo',$this->session->userdata('anyo'));
         $this->db->group_start();               
             $this->db->like('concepto',$filtro);
             $this->db->or_like('titular',$filtro);
@@ -52,7 +60,6 @@ class Apuntes_model extends CI_Model {
         return $data;
     }
 
-    //obtenemos todas las provincias a paginar con la función
     //total_posts_paginados pasando la cantidad por página y el segmento
     //como parámetros de la misma   
     function total_paginados($por_pagina, $segmento, $filtro = NULL) {
@@ -64,15 +71,15 @@ class Apuntes_model extends CI_Model {
         FROM apuntes
         LEFT JOIN desgloses ON apuntes.anyo=desgloses.anyo AND apuntes.apunte=desgloses.apunte
         LEFT JOIN cuentas ON desgloses.codCuenta=cuentas.codCuenta
-        WHERE concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ? OR cuenta LIKE ?
+        WHERE apuntes.anyo = ? AND (concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ? OR cuenta LIKE ?)
         GROUP BY apuntes.anyo,apuntes.apunte
         ORDER BY apunte
         LIMIT ?, ?
 SQL;
         if ($filtro == NULL) $filtro = "";
         $filtro ="%$filtro%";
-        log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
-        $consulta = $this->db->query($sql, array($filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina));
+        //log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
+        $consulta = $this->db->query($sql, array($this->session->userdata('anyo'),$filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina));
         if ($consulta->num_rows() > 0) {
             foreach ($consulta->result() as $fila) { 
                 $data[] = $fila;
@@ -84,9 +91,9 @@ SQL;
     }
 
     function updateObservaciones($apunte,$observaciones) {
-        log_message('error','USER_INFO updateObservaciones: '.$apunte." - ".$observaciones);
+        //log_message('error','USER_INFO updateObservaciones: '.$apunte." - ".$observaciones);
         $this->db->set('observaciones', $observaciones);
-        $this->db->where('anyo', 2016);
+        $this->db->where('anyo', $this->session->userdata('anyo'));
         $this->db->where('apunte', $apunte);
         $this->db->update('apuntes');
     }
@@ -94,9 +101,8 @@ SQL;
     function actualizarObservaciones($apuntes,$observaciones) {
         for($i=0;$i<count($apuntes);$i++) {
             $this->updateObservaciones($apuntes[$i],$observaciones[$i]);
-            log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
-        }
-        
+            //log_message('error','USER_INFO '.$apuntes[$i]." - ".$observaciones[$i]);
+        }        
     }
     
     //obtenemos el total de filas para hacer la paginación
@@ -128,7 +134,7 @@ SQL;
     
     function getImporte($apunte){
         $importe = 0;
-        $this->db->where("anyo = 2016 AND apunte = $apunte");
+        $this->db->where("anyo = ".$this->session->userdata('anyo')." AND apunte = $apunte");
         $consulta = $this->db->get('apuntes');
         foreach ($consulta->result() as $fila){
             $importe = $fila->importe;
@@ -145,10 +151,10 @@ SQL;
         LEFT JOIN desgloses ON apuntes.anyo = desgloses.anyo AND apuntes.apunte = desgloses.apunte
         LEFT JOIN cuentas ON cuentas.codCuenta = desgloses.codCuenta
         LEFT JOIN cuentas as c2 ON c2.codCuenta = conv(concat(LEFT(lpad(conv(desgloses.codCuenta,10,2),8,0),4),'0000'),2,10)
-        WHERE cuentas.descripcion IS NOT NULL AND tipo='Gasto'
+        WHERE apuntes.anyo = ? AND cuentas.descripcion IS NOT NULL AND tipo='Gasto'
         GROUP BY c2.descripcion, cuentas.descripcion, apunte WITH ROLLUP
 SQL;
-        $consulta = $this->db->query($sql);
+        $consulta = $this->db->query($sql,array($this->session->userdata('anyo')));
         if ($consulta->num_rows() > 0) {
             foreach ($consulta->result() as $fila) { 
                 $data[] = $fila;
