@@ -53,7 +53,7 @@ class Apuntes_model extends CI_Model {
             }
             else
             {
-                $data['Gasto']=$fila->importe;
+                $data['Gasto']+=$fila->importe;
             }
             //log_message('info', 'USER_INFO totalpaginados '.$fila->tipo." - ".$fila->importe);
         }
@@ -79,7 +79,7 @@ SQL;
         if ($filtro == NULL) $filtro = "";
         $filtro ="%$filtro%";
         //log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
-        $consulta = $this->db->query($sql, array($this->session->userdata('anyo'),$filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina));
+        $consulta = $this->db->query($sql, [$this->session->userdata('anyo'),$filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina]);
         if ($consulta->num_rows() > 0) {
             foreach ($consulta->result() as $fila) { 
                 $data[] = $fila;

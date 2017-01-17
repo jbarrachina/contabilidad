@@ -69,6 +69,10 @@ $route['desglose/addDesglose'] = 'Desglose_controller/addDesglose';
 
 $route['desglose/(:num)/(:num)'] = 'Desglose_controller/deleteDesglose';
 
+$route['pendientes'] = 'Pendientes_controller';
+$route['pendientes/add_pendiente'] = 'Pendientes_controller/add_pendiente';
+$route['pendientes/autoriza/(:num)'] = 'Pendientes_controller/autoriza';
+$route['pendientes/copia/(:any)'] = 'Pendientes_controller/autoriza';
 
 $route['fotocopias/familias/(:num)/(:num)'] = 'Fotocopias_controller/porFamilias';
 $route['fotocopias/profesores/(:num)/(:num)/(:any)'] = 'Fotocopias_controller/porProfesores';
