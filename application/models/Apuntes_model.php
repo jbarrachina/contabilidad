@@ -10,6 +10,7 @@ class Apuntes_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        //$this->load->library('ion_auth');
     }
 
     //obtenemos el total de filas para hacer la paginación
@@ -65,28 +66,30 @@ class Apuntes_model extends CI_Model {
     function total_paginados($por_pagina, $segmento, $filtro = NULL) {
         
         $sql = <<< SQL
-        SELECT apuntes.apunte as apunte, fechaApunte, fechaPago, fechaFactura,tipo, recurso, destino, cuenta, concepto, numDocumento,
-        observaciones, tipoDocumento, titular, apuntes.importe as importe, 
-        GROUP_CONCAT(CONCAT_WS(':',desgloses.codCuenta,cuentas.descripcion,desgloses.Importe) SEPARATOR '|') as desglose 
-        FROM apuntes
-        LEFT JOIN desgloses ON apuntes.anyo=desgloses.anyo AND apuntes.apunte=desgloses.apunte
-        LEFT JOIN cuentas ON desgloses.codCuenta=cuentas.codCuenta
-        WHERE apuntes.anyo = ? AND (concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ? OR cuenta LIKE ?)
-        GROUP BY apuntes.anyo,apuntes.apunte
-        ORDER BY apunte
+        SELECT *
+        FROM mis_apuntes 
+        WHERE anyo = ? 
+            AND IF(?=0,
+                TRUE,
+                esta_en_rango(?,?,codCuenta)>0)
+            AND(concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ? OR cuenta LIKE ?)
         LIMIT ?, ?
 SQL;
         if ($filtro == NULL) $filtro = "";
         $filtro ="%$filtro%";
         //log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
-        $consulta = $this->db->query($sql, [$this->session->userdata('anyo'),$filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina]);
+        $consulta = $this->db->query($sql, [$this->session->userdata('anyo'),
+            $this->ion_auth->user()->row()->desde,
+            $this->ion_auth->user()->row()->desde,
+            $this->ion_auth->user()->row()->hasta,
+            $filtro, $filtro, $filtro, $filtro, (int)$segmento, $por_pagina]);
         if ($consulta->num_rows() > 0) {
             foreach ($consulta->result() as $fila) { 
                 $data[] = $fila;
             }
             return $data;
         } else {
-            return 0;
+            return NULL;
         }         
     }
 

@@ -45,12 +45,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li class="menu">
                         <a href="/php/contabilidad/apuntes">Apuntes</a>
                     </li>
+                    <?php if ($this->ion_auth->user()->row()->desde==0){?>
                     <li class="menu">
                         <a href="/php/contabilidad/apuntes/listado">Resumen</a>
                     </li>
                     <li class="menu">
                         <a href="/php/contabilidad/fotocopias/familias/201601/<?php echo date('Ym'); ?>">Fotocopias</a>
                     </li>
+                    <?php } ?>
                     <li class="menu">
                         <a href="/php/contabilidad/pendientes">Facturas pendientes</a>
                     </li>

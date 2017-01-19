@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $label_atr = ['class' => 'col-sm-2 control-label']; 
 ?>
 <div class="content">
+<?php if ($this->ion_auth->user()->row()->desde==0){?>
 <form class="form-horizontal" id="form-import" name="upload-file"  action="/php/contabilidad/pendientes/add_pendiente" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <?php echo form_label('Factura: ', 'factura', $label_atr); ?>
@@ -32,6 +33,7 @@ $label_atr = ['class' => 'col-sm-2 control-label'];
         </div>
     </div>
 </form>  
+<?php } ?> 
     <div class="listado">
         <?php 
             if ($lista_pendientes!=NULL){

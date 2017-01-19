@@ -12,6 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </form>
                     </div>
                     <div class="col-md-3 buscar"> 
+                        <?php if ($this->ion_auth->user()->row()->desde==0){?>
                         <form class="form-inline" id="form-import" name="upload-file"  action="/php/contabilidad/apuntes/importar" method="post" enctype="multipart/form-data">
                             <label class="btn btn-default">
                                 <small>
@@ -20,10 +21,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </label>              
                         </form> 
                         <button id="btn-importar" class="btn btn-danger btn-xs">Importar</button>
+                        <?php } ?>
                     </div>
                     <div class="col-md-2 buscar"> 
-                        <a href="/php/contabilidad/apuntes/listado" class="btn btn-primary btn-xs">Resumen</a>
-                        <a href="/php/contabilidad/fotocopias/familias/201601/<?php echo date('Ym'); ?>" class="btn btn-primary btn-xs">Fotocopias</a>
+                        
                     </div>
                     <div class="col-md-2">
                         <dl class="dl-horizontal pull-right">
@@ -46,16 +47,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-1"><h4>Apunte Pago</h4></div>
                 <div class="col-md-1"><h4>Fecha Factura</h4></div>
                 <div class="col-md-1"><h4>Tipo</h4></div>
-                <div class="col-md-5"><h4>Concepto</h4></div>
+                <div class="col-md-1"><h4>Importe</h4></div>
+                <div class="col-md-4"><h4>Concepto</h4></div>
                 <div class="col-md-3"><h4>Observaciones</h4></div>                                    
             </div>
                 <?php
-                if (isset($records)) {
+                if ($records!=NULL){ 
                     $i = 1;
                     foreach ($records as $r) {?>
                         <div class="<?php echo ($i % 2 == 1 ? 'odd' : 'even bg-warning');?>">
                             <div class='row <?php echo ($i % 2 == 1 ? 'odd' : 'even bg-warning');?>'>
-                                <?php $file = "facturas/16" . sprintf("%04d", $r->apunte) . ".pdf";?>
+                                <?php $file = "facturas/".substr($this->session->userdata('anyo'),2).sprintf("%04d", $r->apunte).".pdf";?>
                                 <div class="col-md-1">
                                     <input type="text" class="input-sm" size="4" name="apunte[]"  value="<?php echo $r->apunte;?>">
                                 </div>
@@ -69,7 +71,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class='col-md-1'>
                                     <?php echo $r->recurso . "-" . $r->tipo . "-" . $r->destino;?><br>
                                 </div>
-                                <div class='col-md-5'>
+                                <div class='col-md-1'>
+                                  <span class="pull-right <?php echo ($r->tipo == 'Ingreso') ? "text-danger" : "", " text-right"?>">
+                                     <strong> 
+                                         <?php echo number_format($r->importe, 2, ',', '.');?> 
+                                     </strong>
+                                </span>
+                                </div>
+                                <div class='col-md-4'>
                                     <?php echo $r->concepto;?><br>                                  
                                     <?php echo $r->titular;?> <br>
                                     <?php echo $r->cuenta;?> 
@@ -123,10 +132,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         $i++;
                         }//each
             }//if
-    else {
-        echo "<p> No se encuentran resultados </p>";
-    }
-    echo $this->pagination->create_links() ?>
+    else {?>
+        <div class="alert alert-info" role="alert">No hay apuntes con estas características</div>
+    <?php }
+        echo $this->pagination->create_links() ?>
     </div>        
 </body>
 </html>
