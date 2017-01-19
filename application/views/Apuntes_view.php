@@ -27,12 +27,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         
                     </div>
                     <div class="col-md-2">
+                        <?php if ($this->ion_auth->user()->row()->desde==0){?>
                         <dl class="dl-horizontal pull-right">
-                            <?php
-                            echo "<dt><h4>Ingreso</h4></dt><dd><h4><span class='label label-success'>", number_format($total['Ingreso'], 2, ",", "."), "</span></h4></dd>";
-                            echo "<dt><h4>Gasto</h4></dt><dd><h4><span class='label label-danger'>", number_format($total['Gasto'], 2, ',', '.'), "</span></h4></dd>";
-                            ?>
+                            <dt>
+                                <h4>Ingreso</h4>
+                            </dt>
+                            <dd>
+                                <h4>
+                                    <span class='label label-success'> 
+                                        <?php echo number_format($total['Ingreso'], 2, ",", ".");?>
+                                    </span>
+                                </h4>
+                            </dd>
+                            <dt>
+                                <h4>Gasto</h4>
+                            </dt>
+                            <dd>
+                                <h4>
+                                    <span class='label label-danger'> 
+                                        <?php echo  number_format($total['Gasto'], 2, ',', '.');?>
+                                    </span>
+                                </h4>
+                            </dd>                      
                         </dl>
+                        <?php } ?>
                     </div>
                     <div class="col-md-1" id="year">
                         <br>

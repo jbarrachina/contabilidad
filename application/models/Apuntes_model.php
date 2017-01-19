@@ -15,19 +15,28 @@ class Apuntes_model extends CI_Model {
 
     //obtenemos el total de filas para hacer la paginación
     function filas($filtro = NULL) {
-        if ($filtro === NULL) $filtro = "";
-        $this->db->from('apuntes');
-        $this->db->where('anyo',$this->session->userdata('anyo'));
-        $this->db->group_start();
-        $this->db->like('concepto',$filtro);
-        $this->db->or_like('titular',$filtro);
-        $this->db->or_like('tipoDocumento',$filtro);
-        $this->db->or_like('cuenta',$filtro);
-        $this->db->group_end();
-        //log_message('info', 'USER_INFO '.$this->db->get_compiled_select('apuntes'));       
-        //$consulta = $this->db->get('apuntes');
-        $filas = $this->db->count_all_results();
-        log_message('info', 'USER_INFO filas: '.$filas);
+        $sql = <<< SQL
+        SELECT *
+        FROM mis_apuntes 
+        WHERE anyo = ? 
+            AND IF(?=0,
+                TRUE,
+                esta_en_rango(?,?,codCuenta)>0)
+            AND(concepto LIKE ? OR titular LIKE ? OR tipoDocumento LIKE ? OR cuenta LIKE ?)  
+SQL;
+        if ($filtro == NULL) 
+        { 
+            $filtro = "";
+        }
+        $filtro ="%$filtro%";
+        //log_message('info', 'USER_INFO totalpaginados ' . $filtro."(".$segmento.")".$por_pagina);
+        $consulta = $this->db->query($sql, [$this->session->userdata('anyo'),
+            $this->ion_auth->user()->row()->desde,
+            $this->ion_auth->user()->row()->desde,
+            $this->ion_auth->user()->row()->hasta,
+            $filtro, $filtro, $filtro, $filtro]);
+        $filas = $consulta->num_rows();
+        //log_message('info', 'USER_INFO filas: '.$filas);
         return $filas;
     }
     
@@ -63,8 +72,7 @@ class Apuntes_model extends CI_Model {
 
     //total_posts_paginados pasando la cantidad por página y el segmento
     //como parámetros de la misma   
-    function total_paginados($por_pagina, $segmento, $filtro = NULL) {
-        
+    function total_paginados($por_pagina, $segmento, $filtro = NULL) {  
         $sql = <<< SQL
         SELECT *
         FROM mis_apuntes 
