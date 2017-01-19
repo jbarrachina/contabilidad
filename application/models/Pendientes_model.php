@@ -34,14 +34,17 @@ class Pendientes_model extends CI_Model
     function lista()
     {
         $this->db->where('estado !=',9);
-        $consulta = $this->db->get('pendientes');     
+        $consulta = $this->db->get('pendientes');   
         foreach ($consulta->result() as $fila){
            $data[]= $fila;
         }
-        return $data;
+        if (!empty($data))
+            return $data;
+        else
+            return NULL;
     }
     
-    function autoriza($id, $nuevo_estado=1){
+    function autoriza($id, $nuevo_estado, $id_apunte){
         if (substr($id,0,1)=='c') 
         {
             $nuevo_estado=9;
@@ -51,8 +54,9 @@ class Pendientes_model extends CI_Model
         $this->db->update('pendientes',['estado'=>$nuevo_estado]);//pasa a autorizado a pagar
         if ($nuevo_estado == 9)
         {
-            //renombro fichero fichero
-            //rename('factura/'.pend$i.'.pdf','factura/'.$algo.'.pdf');
+            //renombro fichero fichero rename=mv
+            //log_message('info', 'USER_INFO copiar fichero ' . 'facturas/pend_'.$id.'.pdf'.'-'.'facturas/kk'.$id_apunte.'.pdf');
+            copy('facturas/pend_'.$id.'.pdf','facturas/kk'.$id_apunte.'.pdf');
         }
     }
             

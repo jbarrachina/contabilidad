@@ -64,8 +64,13 @@ class Pendientes_controller extends CI_Controller {
     
     function autoriza()
     {
+        $nuevo_estado = 1;
         $idPendiente = $this->uri->segment(3);
-        $this->pendientes_model->autoriza($idPendiente);
+        if (substr($idPendiente,0,1)=='c') {
+            $idApunte = $this->input->post('apunte_'.substr($idPendiente,1));
+            $nuevo_estado=9;
+        }
+        $this->pendientes_model->autoriza($idPendiente, $nuevo_estado, $idApunte);
         redirect('pendientes');
     }
 
